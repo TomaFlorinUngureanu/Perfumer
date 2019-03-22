@@ -192,7 +192,7 @@ body {
     font-size: 20px;
     float: none;
     display: block;
-    text-align: middle;
+    text-align: center;
     width: 100%;
     margin: 0;
     padding: 30px;
@@ -201,7 +201,7 @@ body {
   .header h1 {
     float: none;
     display: block;
-    text-align: middle;
+    text-align: center;
     width: 100%;
     margin: 0;
     padding: 10px;
@@ -235,7 +235,7 @@ body {
     font-size: 20px;
     float: none;
     display: block;
-    text-align: middle;
+    text-align: center;
     width: 100%;
     margin: 0px;
     padding: 1px;
@@ -244,7 +244,7 @@ body {
   .header h1 .priceCart {
     float: none;
     display: block;
-    text-align: middle;
+    text-align: center;
     width: 100%;
     margin: 0;
     padding: 10px;
@@ -279,7 +279,7 @@ body {
   .header {
     float: none;
     display: block;
-    text-align: middle;
+    text-align: center;
     width: 100%;
     margin: 0;
     padding: 10px;
@@ -288,7 +288,7 @@ body {
   .header h1 {
     float: none;
     display: block;
-    text-align: middle;
+    text-align: center;
     width: 100%;
     margin: 0;
     padding: 10px;
