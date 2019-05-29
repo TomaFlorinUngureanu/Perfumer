@@ -4,19 +4,20 @@
 <html>
 
 <head>
-  <link rel="stylesheet" type="text/css" href="styles\PerfumerIndexStyles.css">
+  <link rel="stylesheet" type="text/css" href="..\styles\PerfumerParfumStyles.css">
 </head>
 
 <body>
 
   <div class="header">
     <div style="display: flex; justify-content: center;">
-      <img src="images\logo.png" alt="Le petit parfum" style="width:180px;height:180px">
+      <img src="..\images\logo.png" alt="Le petit parfum" style="width:180px;height:180px">
     </div>
     <h1>Le petit parfum</h1>
     <p>Develop your taste</p>
   </div>
   <div class="topnav">
+    <a href="PerfumerIndex.html">Home</a>
     <a href="PerfumerPromo.html">Promo</a>
     <a href="PerfumerFragrances.html">Fragrances</a>
     <div class="dropdown">
@@ -46,9 +47,38 @@
 
   <div class="row">
     <div class="rightcolumn">
-      <div class="card">
-        <h2>Best sellers</h2>
-        <div class="fakeimg" style="height:100px;">Slideshow of best sellers with their prices</div>
+      <div class="card" style="position:relative">
+        <h2>Viktor & Rolf: Spicebomb Extreme</h2>
+        <div class="priceCart">
+          <div class="price" style="float:none;padding-bottom:2px;">
+            <h2 style="color:black;font-size: 26px;">Price: 300 lei<br>90 ml<br></h2>
+          </div>
+          <div class="cart" style="float:none">
+            <button class="substract-counter" style="height: 30px; width: 30px ">-</button>
+            <button class="add-counter" style="height: 30px; width: 30px"> + </button>
+            <a>Qty:</a>
+            <span class="click-text"><a id="clicks"></a></span>
+
+            <button style="height: 50px; width: 50px" type="submit"><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>
+            <script src="..\scripts\counter.js"></script>
+          </div>
+        </div>
+        <div class="image">
+          <img src="..\images\parfum1\1.jpg" style="width:300px;height:500px;display: block;margin-left: auto;margin-right: auto;">
+        </div>
+        <div class="about">
+          <h3>About Spicebomb Extreme</h3>
+          <a>Spicebomb Extreme is a masculine fragrance by Viktor & Rolf. The scent was launched in 2015</a>
+          <h3>Fragrance notes:</h3>
+          <ul type="square">
+            <li><a href="">Lavender</a></li>
+            <li><a href="">Cumin</a></li>
+            <li><a href="">Black pepper</a></li>
+            <li><a href="">Vanilla</a></li>
+            <li><a href="">Tobacco</a></li>
+          </ul>
+        </div>
+
       </div>
       <div class="card">
         <h3>Our recommandation</h3>
@@ -83,11 +113,16 @@
     </div>
     <div class="leftcolumn">
       <div class="card">
-        <h2>Newest releases</h2>
-        <h5>On the DD/MM/YYYY the X brand released a new frangrance with name Z</h5>
+        <h2>Other parfumes from the same brand</h2>
         <div class="fakeimg" style="height:200px;">Image</div>
-        <p>Notes of the fragrance</p>
-        <p>Some description of the fragrance.</p>
+        <p>Notes of the fragrance #1.</p>
+        <p>Some description of the fragrance #1.</p>
+        <div class="fakeimg" style="height:200px;">Image</div>
+        <p>Notes of the fragrance #2.</p>
+        <p>Some description of the fragrance #2.</p>
+        <div class="fakeimg" style="height:200px;">Image</div>
+        <p>Notes of the fragrance #3.</p>
+        <p>Some description of the fragrance #3.</p>
       </div>
     </div>
   </div>
