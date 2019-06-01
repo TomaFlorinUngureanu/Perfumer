@@ -8,6 +8,14 @@ class PerfumeModel
     private $notes = null;
     private $releaseDate = null;
 
+    public const notes = array( "Aldehyde","Amber","Animalic","Aquatic","Balsamic","Beverages","Citric","Earthy",
+        "Floral","Fruity","Gourmandy","Grain","Green","Herbacious","Leather","Mineral","Mossy","Musk","Oriental",
+        "Powdery","Resinous","Smoky","Spicy","Synthetic","Tea","Textile","Tobbaco","Woody");
+
+    public const seasons = array("Spring", "Summer", "Autumn", "Winter");
+
+    public const occasions = array("Work", "Interview", "Date", "Party", "Social", "OffDuty");
+
     /**
      * PerfumeModel constructor.
      */

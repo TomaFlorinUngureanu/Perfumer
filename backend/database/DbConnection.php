@@ -1,21 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: thomi
- * Date: 5/28/2019
- * Time: 8:53 PM
- */
 
 class DbConnection
 {
-    private static const URL = "localhost/XE";
-    private static const USER = "student";
-    private static const PASSWORD = "STUDENT";
+    private const URL = "localhost/XE";
+    private const USER = "student";
+    private const PASSWORD = "STUDENT";
     private static $connection = null;
 
     static public function getDbConnection()
     {
-        self::$connection = oci_connect(self::USER,self::PASSWORD, self::URL);
+        self::$connection = oci_connect(self::USER,self::PASSWORD, self::URL,'AL32UTF8');
         return self::$connection;
     }
 
