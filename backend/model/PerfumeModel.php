@@ -7,8 +7,11 @@ class PerfumeModel
     private $quantity = null;
     private $notes = null;
     private $releaseDate = null;
+    private $perfumeId = null;
+    private $occasion = null;
+    private $season = null;
 
-    public const notes = array( "Aldehyde","Amber","Animalic","Aquatic","Balsamic","Beverages","Citric","Earthy",
+    public const notes = array("Aldehyde","Amber","Animalic","Aquatic","Balsamic","Beverages","Citric","Earthy",
         "Floral","Fruity","Gourmandy","Grain","Green","Herbacious","Leather","Mineral","Mossy","Musk","Oriental",
         "Powdery","Resinous","Smoky","Spicy","Synthetic","Tea","Textile","Tobbaco","Woody");
 
@@ -22,6 +25,56 @@ class PerfumeModel
     public function __construct()
     {
     }
+
+    /**
+     * @return null
+     */
+    public function getPerfumeId()
+    {
+        return $this->perfumeId;
+    }
+
+    /**
+     * @param null $perfumeId
+     */
+    public function setPerfumeId($perfumeId): void
+    {
+        $this->perfumeId = $perfumeId;
+    }
+
+    /**
+     * @return null
+     */
+    public function getOccasion()
+    {
+        return $this->occasion;
+    }
+
+    /**
+     * @param null $occasion
+     */
+    public function setOccasion($occasion): void
+    {
+        $this->occasion = $occasion;
+    }
+
+    /**
+     * @return null
+     */
+    public function getSeason()
+    {
+        return $this->season;
+    }
+
+    /**
+     * @param null $season
+     */
+    public function setSeason($season): void
+    {
+        $this->season = $season;
+    }
+
+
 
     /**
      * @return null

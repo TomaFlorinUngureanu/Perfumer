@@ -6,21 +6,89 @@ ini_set("default_charset", 'utf-8');
 class PerfumeController
 {
     private const label = "<label class=\"container\">";
-    private const checkBox = "<input type=\"checkbox\"><span class=\"checkmark\"></span></label>";
+    private const checkBox = "<input type=\"checkbox\" ";
+    private const span = "<span class=\"checkmark\"></span></label>";
+    private $conn;
+
+    /**
+     * PerfumeController constructor.
+     */
+    public function __construct()
+    {
+        $this->conn = DbConnection::getDbConnection();
+    }
+
+    public function getMinMaxPriceSliders($order): int
+    {
+        $sqlQuery = 'select * from (select TO_NUMBER(pret) from parfumuri group by TO_NUMBER(pret) 
+                    order by TO_NUMBER(pret) ' . $order . ') where rownum=1';
+        $maxPrice = null;
+        if (!($stmt = oci_parse($this->conn, $sqlQuery)))
+        {
+            echo "Filtering failed";
+        } else
+        {
+            oci_execute($stmt);
+            $maxPrice = implode(" ",oci_fetch_row($stmt));
+        }
+
+        $maxPrice = intval($maxPrice);
+
+        return $maxPrice;
+    }
+
 
     public function printSpecificFragrance()
     {
 
     }
 
-    public function filterBy($perfumeName, $perfumeBrand, $notes, $releaseDate, $price, $gender): array
+    public function filterBy($brand, $note, $price, $occasion, $season, $gender)
     {
-        //prepared statement to filter by the given criteria
-        //there will be a function called in order to do that
-        if (!($stmt = oci_parse(DbConnection::getDbConnection(), "")))
+//        printf("<br/>");
+//        printf($brand);
+//        printf("<br/>");
+//        printf($note);
+//        printf("<br/>");
+//        printf($price);
+//        printf("<br/>");
+//        printf($occasion);
+//        printf("<br/>");
+//        printf($season);
+//        printf("<br/>");
+//        printf($gender);
+//        printf("<br/>");
+
+        $filteredCursor = oci_new_cursor($this->conn);
+        if (!($stmt = oci_parse($this->conn,
+            'begin :result := lista_parfumuri_filtrare(:occasion, :brand, :note, :season, :price, :gender); end;')))
         {
             echo "Filtering failed";
+        } else
+        {
+            oci_bind_by_name($stmt, ':result', $filteredCursor, -1, OCI_B_CURSOR);
+            oci_bind_by_name($stmt, ':occasion', $occasion);
+            oci_bind_by_name($stmt, ':brand', $brand);
+            oci_bind_by_name($stmt, ':note', $note);
+            oci_bind_by_name($stmt, ':price', $price);
+            oci_bind_by_name($stmt, ':season', $season);
+            oci_bind_by_name($stmt, ':gender', $gender);
+            oci_execute($stmt);
+            oci_execute($filteredCursor);
         }
+
+        $fragranceList = array();
+        while (($row = oci_fetch_array($filteredCursor, OCI_ASSOC + OCI_RETURN_NULLS)) != false)
+        {
+            array_push($fragranceList, $row);
+        }
+
+//        printf("<br/>");
+//        var_dump($fragranceList);
+
+        oci_free_statement($stmt);
+        oci_free_cursor($filteredCursor);
+        return $fragranceList;
     }
 
     public function newestReleases(): array
@@ -67,21 +135,25 @@ class PerfumeController
 
     public function getAllBrands()
     {
-        $allNotes = oci_new_cursor(DbConnection::getDbConnection());
-        $stid = oci_parse(DbConnection::getDbConnection(), 'begin :result := GETALLNOTES; end;');
-        oci_bind_by_name($stid, ':result', $allNotes, -1, OCI_B_CURSOR);
+        $allBrands = oci_new_cursor($this->conn);
+        $stmt = oci_parse($this->conn, 'begin :result := GETALLBRANDS; end;');
+        oci_bind_by_name($stmt, ':result', $allBrands, -1, OCI_B_CURSOR);
 
-        oci_execute($stid);
-        oci_execute($allNotes);
+        oci_execute($stmt);
+        oci_execute($allBrands);
 
-        while (($row = oci_fetch_array($allNotes, OCI_ASSOC + OCI_RETURN_NULLS)) != false)
+        while (($row = oci_fetch_array($allBrands, OCI_ASSOC + OCI_RETURN_NULLS)) != false)
         {
             $text = implode(" ", $row);
             $text = str_replace("\u0026amp;", "&", $text);
             $text = str_replace("\u0027", "'", $text);
-            echo self::label . $text . self::checkBox;
+            echo self::label . $text . self::checkBox . "value=\"" . $text . "\" id=\"brands\" name=\"brands[]\">" . self::span;
             echo "\n";
         }
+
+        oci_free_cursor($allBrands);
+        oci_free_statement($stmt);
+        oci_close($this->conn);
     }
 
 }

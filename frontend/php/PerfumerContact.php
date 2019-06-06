@@ -1,9 +1,9 @@
 <?php
 ob_start();
-require_once('../php/Settings.php');
-require_once('../php/utils/GoogleLoginApi.php');
+require_once('../../config/Settings.php');
+require_once('../../backend/utils/GoogleLoginApi.php');
 require_once('../../libs/PHPMailer_5.2.4/class.phpmailer.php');
-require_once('utils/MailFunctionality.php');
+require_once('../../backend/utils/MailFunctionality.php');
 
 GoogleLoginApi::startSession();
 $mailFunctionality = new MailFunctionality();

@@ -1,8 +1,7 @@
 <?php
 ob_start();
-include ('../../config/emailConfig.ini');
-require_once('Settings.php');
-require_once('utils/GoogleLoginApi.php');
+require_once('../../config/Settings.php');
+require_once('../../backend/utils/GoogleLoginApi.php');
 require_once('../../backend/database/DbConnection.php');
 require_once('../../backend/model/PerfumeModel.php');
 require_once('../../backend/controller/PerfumeController.php');

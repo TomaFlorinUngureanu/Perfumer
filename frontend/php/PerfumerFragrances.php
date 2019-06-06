@@ -1,13 +1,15 @@
 <?php
-require_once('Settings.php');
-require_once('utils/GoogleLoginApi.php');
+require_once('../../config/Settings.php');
+require_once('../../backend/utils/GoogleLoginApi.php');
 require_once('../../backend/database/DbConnection.php');
 require_once('../../backend/model/PerfumeModel.php');
 require_once('../../backend/controller/PerfumeController.php');
 
 GoogleLoginApi::startSession();
 $perfumerController = new PerfumeController();
-
+$minVal = $perfumerController->getMinMaxPriceSliders("asc");
+$maxVal = $perfumerController->getMinMaxPriceSliders("desc");
+$_POST = array();
 ?>
 
 <!DOCTYPE html>
@@ -71,33 +73,38 @@ $perfumerController = new PerfumeController();
 <div class="row">
     <div class="leftcolumn" style="padding-bottom: 35px">
         <div class="card">
-            <h2>Filters</h2>
+            <p id="demo123" style="font-size: x-small"></p>
+            <div class="filterH2">
+                <input type="submit" onclick="loadXMLDoc()" value="Filter!">
+                <script src="../scripts/filterBy.js"></script>
+            </div>
             <h3>Price range:</h3>
             <div class="slidecontainer">
-                <input type="range" min="100" max="1000" value="100" class="slider" id="myRange">
-                <p>Max value: <span id="demo"></span></p>
+                <input type="range" min="<?= $minVal ?>" max="<?= $maxVal ?>"
+                       value="<?= $minVal ?>" class="slider" id="myRange" name="myRange">
+                <p>Max price: <span id="demo"></span> RON</p>
                 <script src="../scripts/fragranceSliders.js">
                 </script>
             </div>
             <h3>For who?</h3>
-            <label class="container">Her
-                <input type="checkbox">
-                <span class="checkmark"></span>
+            <label class="radioContainer">Male
+                <input type="radio" checked="checked" name="genders[]" id="genders" value="male">
+                <span class="radioCheckmark"></span>
             </label>
-            <label class="container">Him
-                <input type="checkbox">
-                <span class="checkmark"></span>
+            <label class="radioContainer">Female
+                <input type="radio" checked="checked" name="genders[]" id="genders" value="female">
+                <span class="radioCheckmark"></span>
             </label>
-            <label class="container">Unisex
-                <input type="checkbox">
-                <span class="checkmark"></span>
+            <label class="radioContainer">Unisex
+                <input type="radio" checked="checked" name="genders[]" id="genders" value="unisex">
+                <span class="radioCheckmark"></span>
             </label>
             <h3>Season</h3>
             <div class="fragranceSeason">
                 <?php foreach (PerfumeModel::seasons as $season): ?>
-                    <label class="container"><?= $season ?>
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
+                    <label class="radioContainer"><?= $season ?>
+                        <input type="radio" checked="checked" value="<?= $season ?>" id="seasons" name="seasons[]">
+                        <span class="radioCheckmark"></span>
                     </label>
                 <?php endforeach; ?>
             </div>
@@ -105,7 +112,7 @@ $perfumerController = new PerfumeController();
             <div class="fragranceOccasions">
                 <?php foreach (PerfumeModel::occasions as $occasion): ?>
                     <label class="container"><?= $occasion ?>
-                        <input type="checkbox">
+                        <input type="checkbox" value="<?= $occasion ?>" id="occasions" name="occasions[]">
                         <span class="checkmark"></span>
                     </label>
                 <?php endforeach; ?>
@@ -115,62 +122,27 @@ $perfumerController = new PerfumeController();
                 <?php $perfumerController->getAllBrands(); ?>
             </div>
             <h3>Notes</h3>
-            <div class="fragranceNotes">
+            <div class="fragranceNotes" id="fragranceNotes">
                 <?php foreach (PerfumeModel::notes as $note): ?>
                     <label class="container"><?= $note ?>
-                        <input type="checkbox">
+                        <input type="checkbox" value="<?= $note ?>" id="notes" name="notes[]">
                         <span class="checkmark"></span>
                     </label>
                 <?php endforeach; ?>
             </div>
+            <script src="../scripts/limitCheckBoxSelection.js"></script>
         </div>
     </div>
     <div class="rightcolumn">
         <div class="card">
-            <h3>Perfumes</h3>
-            <div id="btnContainer">
-                <button class="btn" onclick="listView()"><i class="fa fa-bars"></i> List</button>
-                <button class="btn active" onclick="gridView()"><i class="fa fa-th-large"></i> Grid</button>
-                <script src="../scripts/gridListView.js"></script>
-            </div>
-            <br>
-            <div class="row">
-                <div class="column" style="background-color:#aaa;">
-                    <p>Image with perfume #1 + price, size in ml</p>
-                    <p>Some text..</p>
-                </div>
-                <div class="column" style="background-color:#bbb;">
-                    <p>Image with perfume #2 + price, size in ml</p>
-                    <p>Some text..</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="column" style="background-color:#ccc;">
-                    <p>Image with perfume #3 + price, size in ml</p>
-                    <p>Some text..</p>
-                </div>
-                <div class="column" style="background-color:#ddd;">
-                    <p>Image with perfume #4 + price, size in ml</p>
-                    <p>Some text..</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="column" style="background-color:#eee;">
-                    <p>Image with perfume #5 + price, size in ml</p>
-                    <p>Some text..</p>
-                </div>
-                <div class="column" style="background-color:#fff;">
-                    <p>Image with perfume #6 + price, size in ml</p>
-                    <p>Some text..</p>
-                </div>
+            <div class="fragranceGridWrapper" id="fragranceGridWrapper">
             </div>
         </div>
     </div>
-</div>
 
-<div class="footer">
-    <h2>Contact and authors</h2>
-</div>
+    <div class="footer">
+        <h2>Contact and authors</h2>
+    </div>
 
 </body>
 

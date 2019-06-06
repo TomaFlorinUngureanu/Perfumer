@@ -1,6 +1,6 @@
 <?php
-require_once('Settings.php');
-require_once('utils/GoogleLoginApi.php');
+require_once('../../config/Settings.php');
+require_once('../../backend/utils/GoogleLoginApi.php');
 
 GoogleLoginApi::startSession();
 $userInfo = GoogleLoginApi::greeting();
