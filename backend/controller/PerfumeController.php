@@ -2,30 +2,151 @@
 header("Content-Type: text/html; charset=utf-8");
 ini_set("default_charset", 'utf-8');
 
-
 class PerfumeController
 {
     private const label = "<label class=\"container\">";
-    private const checkBox = "<input type=\"checkbox\"><span class=\"checkmark\"></span></label>";
+    private const checkBox = "<input type=\"checkbox\" ";
+    private const span = "<span class=\"checkmark\"></span></label>";
+    private $conn;
 
-    public function printSpecificFragrance()
+    /**
+     * PerfumeController constructor.
+     */
+    public function __construct()
     {
-
+        $this->conn = DbConnection::getDbConnection();
     }
 
-    public function filterBy($perfumeName, $perfumeBrand, $notes, $releaseDate, $price, $gender): array
+    public function getMinMaxPriceSliders($order): int
     {
-        //prepared statement to filter by the given criteria
-        //there will be a function called in order to do that
-        if (!($stmt = oci_parse(DbConnection::getDbConnection(), "")))
+        $sqlQuery = 'select * from (select TO_NUMBER(pret) from parfumuri group by TO_NUMBER(pret) 
+                    order by TO_NUMBER(pret) ' . $order . ') where rownum=1';
+        $price = null;
+        if (!($stmt = oci_parse($this->conn, $sqlQuery)))
         {
             echo "Filtering failed";
+        } else
+        {
+            oci_execute($stmt);
+            $price = implode(" ", oci_fetch_row($stmt));
         }
+
+        $price = intval($price);
+
+        return $price;
+    }
+
+    public function getSpecificFragrance($fragranceId, $option)
+    {
+        var_dump($fragranceId);
+        var_dump($option);
+        $fragranceArray = array();
+        $specificFragranceCursor = oci_new_cursor($this->conn);
+        $stmt = oci_parse($this->conn, 'begin :result := SPECIFICPERFUME(:id); end;');
+        oci_bind_by_name($stmt, ':result', $specificFragranceCursor, -1, OCI_B_CURSOR);
+        oci_bind_by_name($stmt,':id',$fragranceId);
+        oci_execute($stmt);
+        oci_execute($specificFragranceCursor);
+
+        while (($row = oci_fetch_array($specificFragranceCursor, OCI_ASSOC + OCI_RETURN_NULLS)) != false)
+        {
+            array_push($fragranceArray, $row);
+        }
+
+        if($option === null)
+        {
+            $option = 1;
+        }
+        $specificQuantityArray =  $fragranceArray[$option];
+        return $specificQuantityArray;
+    }
+
+    public function filterBy($brand, $note, $price, $occasion, $season, $gender)
+    {
+//        printf("<br/>");
+//        printf($brand);
+//        printf("<br/>");
+//        printf($note);
+//        printf("<br/>");
+//        printf($price);
+//        printf("<br/>");
+//        printf($occasion);
+//        printf("<br/>");
+//        printf($season);
+//        printf("<br/>");
+//        printf($gender);
+//        printf("<br/>");
+
+        $filteredCursor = oci_new_cursor($this->conn);
+        if (!($stmt = oci_parse($this->conn,
+            'begin :result := lista_parfumuri_filtrare(:occasion, :brand, :note, :season, :price, :gender); end;')))
+        {
+            var_dump("HERE");
+            echo "Filtering failed";
+        } else
+        {
+            oci_bind_by_name($stmt, ':result', $filteredCursor, -1, OCI_B_CURSOR);
+            oci_bind_by_name($stmt, ':occasion', $occasion);
+            oci_bind_by_name($stmt, ':brand', $brand);
+            oci_bind_by_name($stmt, ':note', $note);
+            oci_bind_by_name($stmt, ':price', $price);
+            oci_bind_by_name($stmt, ':season', $season);
+            oci_bind_by_name($stmt, ':gender', $gender);
+            oci_execute($stmt);
+            oci_execute($filteredCursor);
+        }
+
+        $fragranceList = array();
+        //var_dump("Starting");
+
+        while (($row = oci_fetch_array($filteredCursor, OCI_ASSOC + OCI_RETURN_NULLS)) != false)
+        {
+          //  var_dump($row);
+            array_push($fragranceList, $row);
+        }
+        //var_dump("Ending");
+        //printf("<br/>");
+        //var_dump($fragranceList);
+
+        for ($i = 0; $i < sizeof($fragranceList); $i++)
+        {
+            //var_dump($fragranceList[$i]['POZA']);
+            foreach ($fragranceList[$i] as $key => $value)
+            {
+                $text = str_replace("\u0026amp;", "&", $value);
+                $text = str_replace("\u0027", "'", $value);
+                $fragranceList[$i][$key] = $text;
+            }
+            //var_dump($fragranceList[$i]['POZA']);
+        }
+
+        //printf("<br/>");
+        //var_dump($fragranceList);
+
+        oci_free_statement($stmt);
+        oci_free_cursor($filteredCursor);
+        return $fragranceList;
     }
 
     public function newestReleases(): array
     {
         //return 4 of the newest releases, 2 for each gender
+    }
+
+    public function checkStock($perfumeId, $quantity)
+    {
+        $stock = null;
+        $sqlQuery = 'select stoc from PARFUMURI where id=' . $perfumeId . ' and cantitate=' . strval($quantity);
+        if (!($stmt = oci_parse($this->conn, $sqlQuery)))
+        {
+            echo "Filtering failed";
+        } else
+        {
+            oci_execute($stmt);
+            $stock = oci_fetch_row($stmt);
+        }
+        $stockInt = intval($stock[0]);
+        return $stockInt;
     }
 
     public function todaySpecialDiscounts(): array
@@ -67,21 +188,25 @@ class PerfumeController
 
     public function getAllBrands()
     {
-        $allNotes = oci_new_cursor(DbConnection::getDbConnection());
-        $stid = oci_parse(DbConnection::getDbConnection(), 'begin :result := GETALLNOTES; end;');
-        oci_bind_by_name($stid, ':result', $allNotes, -1, OCI_B_CURSOR);
+        $allBrands = oci_new_cursor($this->conn);
+        $stmt = oci_parse($this->conn, 'begin :result := GETALLBRANDS; end;');
+        oci_bind_by_name($stmt, ':result', $allBrands, -1, OCI_B_CURSOR);
 
-        oci_execute($stid);
-        oci_execute($allNotes);
+        oci_execute($stmt);
+        oci_execute($allBrands);
 
-        while (($row = oci_fetch_array($allNotes, OCI_ASSOC + OCI_RETURN_NULLS)) != false)
+        while (($row = oci_fetch_array($allBrands, OCI_ASSOC + OCI_RETURN_NULLS)) != false)
         {
             $text = implode(" ", $row);
             $text = str_replace("\u0026amp;", "&", $text);
             $text = str_replace("\u0027", "'", $text);
-            echo self::label . $text . self::checkBox;
+            echo self::label . $text . self::checkBox . "value=\"" . $text . "\" id=\"brands\" name=\"brands[]\">" . self::span;
             echo "\n";
         }
+
+        oci_free_cursor($allBrands);
+        oci_free_statement($stmt);
+        oci_close($this->conn);
     }
 
 }

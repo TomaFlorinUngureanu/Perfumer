@@ -1,10 +1,11 @@
 <?php
-require_once('Settings.php');
-require_once('utils/GoogleLoginApi.php');
+require_once('../../config/Settings.php');
+require_once('../../backend/utils/GoogleLoginApi.php');
 
 GoogleLoginApi::startSession();
 $userInfo = GoogleLoginApi::greeting();
 $_SESSION["userName"] = $userInfo['name'];
+$_SESSION["userEmail"] = $userInfo['email'];
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +25,6 @@ $_SESSION["userName"] = $userInfo['name'];
         <img src="..\images\logo.png" alt="Le petit parfum" style="width:180px;height:180px">
     </div>
     <h1>Welcome, <?= $_SESSION["userName"] ?></h1>
-    <p>Develop your taste</p>
 </div>
 <div class="topnav">
     <a href="PerfumerIndex.php">Home</a>
@@ -47,12 +47,12 @@ $_SESSION["userName"] = $userInfo['name'];
         </div>
     </div>
     <a href="PerfumerShoppingCart.php" style="float:right">Shopping Cart</a>
-    <a style="float:right">Logout</a>
+    <a style="float:right" href="../../backend/utils/logout.php">Logout</a>
     <a href="PerfumerContact.php" style="float:right">Contact</a>
     <div class="search-container">
         <form action="/action_page.php">
             <input type="text" placeholder="Search.." name="search">
-            <button type="submit"><i class="fa fa-search"></i></button>
+            <button type="submit">Go!</button>
         </form>
     </div>
 </div>

@@ -58,7 +58,12 @@ class CommandController
         {
             //error code, number of arguments to large
         }
+    }
 
+    public function addToShoppingCart($perfumeModel, $cost, $amount) :bool
+    {
+
+        return true;
     }
 
 }

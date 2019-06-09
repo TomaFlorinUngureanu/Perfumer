@@ -1,7 +1,7 @@
 <?php
 ob_start();
-require_once('../php/Settings.php');
-require_once('../php/utils/GoogleLoginApi.php');
+require_once('../../config/Settings.php');
+require_once('../../backend/utils/GoogleLoginApi.php');
 
 GoogleLoginApi::startSession();
 ?>
@@ -9,7 +9,6 @@ GoogleLoginApi::startSession();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
     <title>Perfumer Shopping Cart</title>
     <style>
@@ -51,14 +50,14 @@ GoogleLoginApi::startSession();
         '&redirect_uri=' . urlencode(CLIENT_REDIRECT_URL) . '&response_type=code&client_id=' . CLIENT_ID .
         '&access_type=online' ?>" style="float:right">Login</a>
     <?php else : ?>
-        <a style="float:right">Logout</a>
+        <a style="float:right" href="../../backend/utils/logout.php">Logout</a>
     <?php endif; ?>
 
     <a href="PerfumerContact.php" style="float:right">Contact</a>
     <div class="search-container">
         <form action="/action_page.php">
             <input type="text" placeholder="Search.." name="search">
-            <button type="submit"><i class="fa fa-search"></i></button>
+            <button type="submit">Go!</button>
         </form>
     </div>
 </div>
