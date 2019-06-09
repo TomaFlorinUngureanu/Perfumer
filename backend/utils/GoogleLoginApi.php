@@ -76,5 +76,12 @@ class GoogleLoginApi
             session_start();
         }
     }
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
+>>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
 }

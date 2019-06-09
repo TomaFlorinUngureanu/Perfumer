@@ -45,6 +45,19 @@ function PerfumeGetter()
         perfumeGetterHelper($fragranceList, $postedNotesFlag, $postedNotesArray, $fragranceArray, $forFlag);
     }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+    $sold = array();
+    foreach ($fragranceArray as $key => $row)
+    {
+        $sold[$key] = $row['UNITATIVANDUTE'];
+    }
+
+    array_multisort($sold, SORT_DESC, $fragranceArray);
+>>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
+>>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
    // printf(sizeof($fragranceArray));
    // printf("<br/>");
     echo (json_encode($fragranceArray));

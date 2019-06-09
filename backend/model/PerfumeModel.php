@@ -10,6 +10,10 @@ class PerfumeModel
     private $perfumeId = null;
     private $occasion = null;
     private $season = null;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
     private $price = null;
     private $picture = null;
     private $gender = null;
@@ -82,6 +86,12 @@ class PerfumeModel
 
 
 
+<<<<<<< HEAD
+=======
+=======
+
+>>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
+>>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
     public const notes = array("Aldehyde","Amber","Animalic","Aquatic","Balsamic","Beverages","Citric","Earthy",
         "Floral","Fruity","Gourmandy","Grain","Green","Herbacious","Leather","Mineral","Mossy","Musk","Oriental",
         "Powdery","Resinous","Smoky","Spicy","Synthetic","Tea","Textile","Tobbaco","Woody");
