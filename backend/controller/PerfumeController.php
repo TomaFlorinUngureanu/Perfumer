@@ -16,6 +16,29 @@ class PerfumeController
     {
         $this->conn = DbConnection::getDbConnection();
     }
+<<<<<<< HEAD
+=======
+
+    public function getMinMaxPriceSliders($order): int
+    {
+        $sqlQuery = 'select * from (select TO_NUMBER(pret) from parfumuri group by TO_NUMBER(pret) 
+                    order by TO_NUMBER(pret) ' . $order . ') where rownum=1';
+        $maxPrice = null;
+        if (!($stmt = oci_parse($this->conn, $sqlQuery)))
+        {
+            echo "Filtering failed";
+        } else
+        {
+            oci_execute($stmt);
+            $maxPrice = implode(" ",oci_fetch_row($stmt));
+        }
+
+        $maxPrice = intval($maxPrice);
+
+        return $maxPrice;
+    }
+
+>>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
 
     public function getMinMaxPriceSliders($order): int
     {
@@ -36,6 +59,7 @@ class PerfumeController
         return $price;
     }
 
+<<<<<<< HEAD
     public function getSpecificFragrance($fragranceId, $option)
     {
         var_dump($fragranceId);
@@ -49,6 +73,27 @@ class PerfumeController
         oci_execute($specificFragranceCursor);
 
         while (($row = oci_fetch_array($specificFragranceCursor, OCI_ASSOC + OCI_RETURN_NULLS)) != false)
+=======
+    public function filterBy($brand, $note, $price, $occasion, $season, $gender)
+    {
+//        printf("<br/>");
+//        printf($brand);
+//        printf("<br/>");
+//        printf($note);
+//        printf("<br/>");
+//        printf($price);
+//        printf("<br/>");
+//        printf($occasion);
+//        printf("<br/>");
+//        printf($season);
+//        printf("<br/>");
+//        printf($gender);
+//        printf("<br/>");
+
+        $filteredCursor = oci_new_cursor($this->conn);
+        if (!($stmt = oci_parse($this->conn,
+            'begin :result := lista_parfumuri_filtrare(:occasion, :brand, :note, :season, :price, :gender); end;')))
+>>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
         {
             array_push($fragranceArray, $row);
         }
@@ -97,6 +142,7 @@ class PerfumeController
         }
 
         $fragranceList = array();
+<<<<<<< HEAD
         //var_dump("Starting");
 
         while (($row = oci_fetch_array($filteredCursor, OCI_ASSOC + OCI_RETURN_NULLS)) != false)
@@ -122,6 +168,15 @@ class PerfumeController
 
         //printf("<br/>");
         //var_dump($fragranceList);
+=======
+        while (($row = oci_fetch_array($filteredCursor, OCI_ASSOC + OCI_RETURN_NULLS)) != false)
+        {
+            array_push($fragranceList, $row);
+        }
+
+//        printf("<br/>");
+//        var_dump($fragranceList);
+>>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
 
         oci_free_statement($stmt);
         oci_free_cursor($filteredCursor);

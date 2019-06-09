@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 function selectedElements(tagName) {
     const elementsArray = document.getElementsByName(tagName + '[]');
     //console.log(elementsArray);
@@ -52,6 +53,34 @@ function loadXMLDoc() {
             theParent.appendChild(wrapperReborn);
 
             //console.log(this.responseText);
+=======
+function loadXMLDoc()
+{
+    var xmlhttp;
+    var brandsArray = ["Avon", "Calvin Klein", "Versace"];
+    var occasion = ["Work"];
+    var seasonOpt = ["Summer"];
+    var noteOpt = ["Aquatic"];
+    var price = ["1539"];
+    var genderArray = ["male"];
+
+    if (window.XMLHttpRequest)
+    {
+        xmlhttp = new XMLHttpRequest();
+    }
+    else
+    {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.open("POST","../../backend/utils/PerfumeGetter.php",true);
+    xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    xmlhttp.onreadystatechange = function()
+    {
+        if(this.readyState === 4 && this.status === 200)
+        {
+>>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
             const response = JSON.parse(this.responseText);
             const size = Object.keys(response).length;
             const wrapper = document.getElementById("fragranceGridWrapper");
@@ -61,6 +90,7 @@ function loadXMLDoc() {
             let oBrand = null;
             let oPrice = null;
             let oNotes = null;
+<<<<<<< HEAD
             let oId = null;
 
             for (let i = 0; i < size; i++) {
@@ -79,10 +109,27 @@ function loadXMLDoc() {
                 oImg.addEventListener("click", sendToSpecificFragrance);
                 oImg.setAttribute('id','fragranceImage');
                 oImg.setAttribute('name', 'fragranceImage');
+=======
+
+            for(let i = 0; i < size; i++)
+            {
+                //create the div class
+                oDiv = document.createElement("div");
+                oDiv.setAttribute('class', 'fragranceGrid');
+                console.log(oDiv);
+
+                //create the img element and append it to the div class
+                oImg = document.createElement("img");
+                oImg.setAttribute('src', response[i]['POZA'] );
+                oImg.setAttribute('height', '200');
+                oImg.setAttribute('width', '200');
+                oImg.setAttribute('class','centerFragrancePicture');
+>>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
                 oDiv.appendChild(oImg);
 
                 //create the title element and append it to the div class
                 oTitle = document.createElement("p");
+<<<<<<< HEAD
                 oTitle.setAttribute('id','fragranceTitle');
                 oTitle.setAttribute('name', 'fragranceTitle');
                 oTitle.innerHTML = response[i]['NUME'];
@@ -102,28 +149,46 @@ function loadXMLDoc() {
                 oBrand.innerHTML = response[i]['BRAND'];
                 oBrand.setAttribute('id','fragranceBrand');
                 oBrand.setAttribute('name', 'fragranceBrand');
+=======
+                oTitle.innerHTML = response[i]['NUME'];
+                oDiv.appendChild(oTitle);
+
+                //create the brand element and append it to the div class
+                oBrand = document.createElement("p");
+                oBrand.innerHTML = response[i]['BRAND'];
+>>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
                 oDiv.appendChild(oBrand);
 
                 //create the notes element and append it to the div class
                 oNotes = document.createElement("p");
                 oNotes.innerHTML = response[i]['NOTE'];
+<<<<<<< HEAD
                 oNotes.setAttribute('id','fragranceNotes');
                 oNotes.setAttribute('name', 'fragranceNotes');
+=======
+>>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
                 oDiv.appendChild(oNotes);
 
                 //create the price element and append it to the div class
                 oPrice = document.createElement("p");
                 oPrice.innerHTML = response[i]['PRET'] + " RON";
+<<<<<<< HEAD
                 oPrice.setAttribute('id','fragrancePrice');
                 oPrice.setAttribute('name', 'fragrancePrice');
                 oDiv.appendChild(oPrice);
 
                 //console.log(wrapper);
+=======
+                oDiv.appendChild(oPrice);
+
+                console.log(wrapper);
+>>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
                 wrapper.appendChild(oDiv);
             }
         }
     };
 
+<<<<<<< HEAD
     xmlhttp.send("&occasions=" + JSON.stringify(occasion) +
         "&seasons=" + JSON.stringify(seasonOpt) +
         "&myRange=" + JSON.stringify(price) +
@@ -157,4 +222,9 @@ function sendToSpecificFragrance(event) {
 
     xmlhttp.send("&fragranceId=" + JSON.stringify(fragranceArray));
     window.location = "PerfumerSpecificFragrance.php";
+=======
+    xmlhttp.send( "&occasions=" + JSON.stringify(occasion) +
+        "&seasons=" + JSON.stringify(seasonOpt) +
+        "&myRange=" + JSON.stringify(price) + "&genders=" + JSON.stringify(genderArray));
+>>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
 }
