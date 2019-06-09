@@ -76,28 +76,12 @@ $_POST = array();
             <p id="demo123" style="font-size: x-small"></p>
             <div class="filterH2">
                 <input type="submit" onclick="loadXMLDoc()" value="Filter!">
-<<<<<<< HEAD
                 <script src="../scripts/ajaxRelated.js?v=2"></script>
-=======
-<<<<<<< HEAD
-                <script src="../scripts/ajaxRelated.js?v=2"></script>
-=======
-                <script src="../scripts/filterBy.js"></script>
->>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
->>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
             </div>
             <h3>Price range:</h3>
             <div class="slidecontainer">
                 <input type="range" min="<?= $minVal ?>" max="<?= $maxVal ?>"
-<<<<<<< HEAD
                        value="<?= $minVal ?>" class="slider" id="myRange" name="price[]">
-=======
-<<<<<<< HEAD
-                       value="<?= $minVal ?>" class="slider" id="myRange" name="price[]">
-=======
-                       value="<?= $minVal ?>" class="slider" id="myRange" name="myRange">
->>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
->>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
                 <p>Max price: <span id="demo"></span> RON</p>
                 <script src="../scripts/fragranceSliders.js">
                 </script>
@@ -151,16 +135,9 @@ $_POST = array();
     </div>
     <div class="rightcolumn">
         <div class="card">
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
             <div class="fragranceNotToDelete" id="fragranceNotToDelete">
                 <div class="fragranceGridWrapper" id="fragranceGridWrapper">
                 </div>
-=======
-            <div class="fragranceGridWrapper" id="fragranceGridWrapper">
->>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
             </div>
         </div>
     </div>

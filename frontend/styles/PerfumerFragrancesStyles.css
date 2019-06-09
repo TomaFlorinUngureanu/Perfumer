@@ -4,30 +4,14 @@
 
 .filterH2 input
 {
-<<<<<<< HEAD
     background-color: red;
-=======
-<<<<<<< HEAD
-    background-color: red;
-=======
-    background-color: red; /* Green */
->>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
->>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
     border: none;
     color: white;
     padding: 10px 30px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-<<<<<<< HEAD
     font-size: 18px;
-=======
-<<<<<<< HEAD
-    font-size: 18px;
-=======
-    font-size: 20px;
->>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
->>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
     cursor: pointer;
 }
 
@@ -57,33 +41,16 @@
 .fragranceGrid p
 {
     text-align:center;
-<<<<<<< HEAD
     font-size: 14px;
-=======
-<<<<<<< HEAD
-    font-size: 14px;
-=======
-    font-size: 18px;
->>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
->>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
     color:red;
     vertical-align: middle;
 }
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
 .fragranceGridWrapper img
 {
     width: 75%;
     height: auto;
 }
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
->>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
 
 .recommendRow:after {
     content: "";
@@ -151,15 +118,7 @@ body {
 
 .header h1 {
     font-family: "Tangerine", serif;
-<<<<<<< HEAD
     font-size: 60px;
-=======
-<<<<<<< HEAD
-    font-size: 60px;
-=======
-    font-size: 80px;
->>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
->>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
     padding-top: -10px;
 }
 
@@ -233,15 +192,7 @@ body {
 .topnav input[type=text] {
     padding: 6px;
     margin-top: 8px;
-<<<<<<< HEAD
     font-size: 15px;
-=======
-<<<<<<< HEAD
-    font-size: 15px;
-=======
-    font-size: 18px;
->>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
->>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
     border: none;
 }
 
@@ -251,15 +202,7 @@ body {
     margin-top: 8px;
     margin-right: 16px;
     background: #ddd;
-<<<<<<< HEAD
     font-size: 15px;
-=======
-<<<<<<< HEAD
-    font-size: 15px;
-=======
-    font-size: 18px;
->>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
->>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
     border: none;
     cursor: pointer;
 }
@@ -274,15 +217,7 @@ body {
     padding-left: 35px;
     margin-bottom: 12px;
     cursor: pointer;
-<<<<<<< HEAD
     font-size: 15px;
-=======
-<<<<<<< HEAD
-    font-size: 15px;
-=======
-    font-size: 18px;
->>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
->>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
 }
 
 .container input {
@@ -340,15 +275,7 @@ body {
     padding-left: 35px;
     margin-bottom: 12px;
     cursor: pointer;
-<<<<<<< HEAD
     font-size: 15px;
-=======
-<<<<<<< HEAD
-    font-size: 15px;
-=======
-    font-size: 18px;
->>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
->>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;

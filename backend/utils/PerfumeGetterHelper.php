@@ -7,15 +7,7 @@ function setFilters(&$postedBrands, &$postedBrandsFlag, &$postedBrandsArray, &$p
 //    printf("<br/>");
 //    printf("brands:");
 //    var_dump(json_decode($_POST['brands']));
-<<<<<<< HEAD
     if (isset($_POST['brands']) && sizeof(json_decode($_POST['brands'])) != 0)
-=======
-<<<<<<< HEAD
-    if (isset($_POST['brands']) && sizeof(json_decode($_POST['brands'])) != 0)
-=======
-    if (isset($_POST['brands']))
->>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
->>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
     {
         if (implode(" ", json_decode($_POST['brands'])) != json_decode($_POST['brands'])[0])
         {
@@ -32,25 +24,11 @@ function setFilters(&$postedBrands, &$postedBrandsFlag, &$postedBrandsArray, &$p
 //    printf("<br/>");
 //    printf("notes:");
 //    var_dump(json_decode($_POST['notes']));
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
     if (isset($_POST['notes']) && sizeof(json_decode($_POST['notes'])) != 0)
     {
         if (implode(" ", json_decode($_POST['notes'])) != json_decode($_POST['notes'])[0])
         {
 //            var_dump("Array");
-<<<<<<< HEAD
-=======
-=======
-    if (isset($_POST['notes']))
-    {
-        if (implode(" ", json_decode($_POST['notes'])) != json_decode($_POST['notes'])[0])
-        {
-            var_dump("Array");
->>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
->>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
             $postedNotes = json_decode($_POST['notes'])[0];
             $postedNotesFlag = true;
             $postedNotesArray = json_decode($_POST['notes']);
@@ -63,25 +41,11 @@ function setFilters(&$postedBrands, &$postedBrandsFlag, &$postedBrandsArray, &$p
 //    printf("<br/>");
 //    printf("occasions:");
 //    var_dump(json_decode($_POST['occasions']));
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
     if (isset($_POST['occasions']) && sizeof(json_decode($_POST['occasions'])) != 0)
     {
         if (implode(" ", json_decode($_POST['occasions'])) != json_decode($_POST['occasions'])[0])
         {
 //            var_dump("Array");
-<<<<<<< HEAD
-=======
-=======
-    if (isset($_POST['occasions']))
-    {
-        if (implode(" ", json_decode($_POST['occasions'])) != json_decode($_POST['occasions'])[0])
-        {
-            var_dump("Array");
->>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
->>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
             $postedOccasions = json_decode($_POST['occasions'])[0];
             $postedOccasionsFlag = true;
             $postedOccasionsArray = json_decode($_POST['occasions']);
@@ -94,36 +58,16 @@ function setFilters(&$postedBrands, &$postedBrandsFlag, &$postedBrandsArray, &$p
 //    printf("<br/>");
 //    printf("seasons:");
 //    var_dump(json_decode($_POST['seasons']));
-<<<<<<< HEAD
     if (isset($_POST['seasons']) && sizeof(json_decode($_POST['seasons'])) != 0)
-=======
-<<<<<<< HEAD
-    if (isset($_POST['seasons']) && sizeof(json_decode($_POST['seasons'])) != 0)
-=======
-    if (isset($_POST['seasons']))
->>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
->>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
     {
         $postedSeasons = implode(" ", json_decode($_POST['seasons']));
     }
 
 //    printf("<br/>");
 //    printf("myRange:");
-<<<<<<< HEAD
     if (isset($_POST['myRange']) && sizeof(json_decode($_POST['myRange'])) != 0)
     {
         $convertedPrice = json_decode($_POST['myRange']);
-=======
-<<<<<<< HEAD
-    if (isset($_POST['myRange']) && sizeof(json_decode($_POST['myRange'])) != 0)
-    {
-        $convertedPrice = json_decode($_POST['myRange']);
-=======
-    $convertedPrice = json_decode($_POST['myRange']);
-    if (isset($_POST['myRange']))
-    {
->>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
->>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
         if (is_numeric($convertedPrice[0]))
         {
             $postedPrice = intval($convertedPrice[0]);
@@ -133,15 +77,7 @@ function setFilters(&$postedBrands, &$postedBrandsFlag, &$postedBrandsArray, &$p
 //    printf("<br/>");
 //    printf("genders:");
 //    var_dump(json_decode($_POST['genders']));
-<<<<<<< HEAD
     if (isset($_POST['genders']) && sizeof(json_decode($_POST['genders'])) != 0)
-=======
-<<<<<<< HEAD
-    if (isset($_POST['genders']) && sizeof(json_decode($_POST['genders'])) != 0)
-=======
-    if (isset($_POST['genders']))
->>>>>>> 994106a6ce3451877e7d77f20ff0941557e58733
->>>>>>> ccf2752fed67fa0d4a28ad3dcb0f8d9c3ff1247b
     {
         switch (json_decode($_POST['genders'])[0])
         {
