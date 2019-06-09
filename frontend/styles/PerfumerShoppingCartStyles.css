@@ -10,7 +10,7 @@ body {
 
 /* Header/Blog Title */
 .header {
-    padding: 30px;
+    padding: 10px;
     text-align: center;
     background: white;
 }
@@ -18,8 +18,8 @@ body {
 .header h1 {
     font-family: "Tangerine", serif;
     font-size: 80px;
+    padding-top: -10px;
 }
-
 .header img {
     float: left;
     object-fit: none;

@@ -2,6 +2,89 @@
     box-sizing: border-box;
 }
 
+.fragranceImageWrapper {
+    float: left;
+    width: 50%;
+    padding-right: 20px;
+}
+
+.specificPerfumeText
+{
+    position: relative;
+    top: 50%;
+    transform: translateX(+5%);
+}
+
+.specificPerfumeTextWrapper {
+    float: right;
+    width: 50%;
+}
+
+.specificPerfumeWrapper:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.quantityWrapper
+{
+    display: flex;
+    justify-content: flex-end;
+    padding: 1em;
+}
+
+.toCartWrapper
+{
+    display: flex;
+    justify-content: flex-end;
+    padding: 1em;
+}
+
+.quantity-amount
+{
+    width: 40px;
+    text-align: center;
+    font-size: 20px;
+}
+
+.ml100Button:active, .ml50Button:active, .ml150Button:active, .ml200Button:active{
+    background-color: red;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+.minusButton, .plusButton, .toCartButton
+{
+    background-color: red;
+    border: none;
+    color: white;
+    padding: 2px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.ml50Button, .ml100Button, .ml150Button, .ml200Button {
+    background-color: red;
+    border: none;
+    color: white;
+    padding: 2px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    cursor: pointer;
+}
+.minusButton:active, .plusButton:active, .toCartButton:active, .ml50Button:active  {
+    background-color: red;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+.button:hover {background-color: red}
+
 body {
     font-family: Arial, Helvetica, sans-serif;
     padding: 10px;
@@ -22,10 +105,7 @@ body {
 
 .header img {
     float: left;
-}
-
-button {
-
+    object-fit: none;
 }
 
 /* Style the top navigation bar */
@@ -162,6 +242,7 @@ button {
 }
 
 @media screen and (max-width: 800px) {
+
     .leftcolumn, .rightcolumn {
         width: 100%;
         padding: 0;
@@ -206,6 +287,35 @@ button {
 }
 
 @media screen and (max-width: 600px) {
+
+    .fragranceImageWrapper {
+        float: none;
+        width: 100%;
+        transform: translateX(+10%);
+    }
+
+    .specificPerfumeText
+    {
+        width: 100%;
+        transform: translateX(+50%);
+    }
+
+    .specificPerfumeTextWrapper {
+        float: none;
+        width: 50%;
+    }
+
+    .quantityWrapper,  .toCartWrapper
+    {
+        display: block;
+    }
+
+    .quantity-amount
+    {
+        width: 40px;
+        font-size: 20px;
+    }
+
     .leftcolumn, .rightcolumn {
         width: 100%;
         padding: 0;
@@ -233,6 +343,45 @@ button {
 }
 
 @media screen and (max-width: 400px) {
+    .fragranceImageWrapper {
+        float: none;
+        width: 50%;
+        padding-right: 20px;
+    }
+
+    .specificPerfumeText
+    {
+        position: relative;
+        top: 50%;
+        transform: translateX(+25%);
+    }
+
+    .specificPerfumeTextWrapper {
+        float: none;
+        width: 50%;
+    }
+
+    .quantityWrapper
+    {
+        display: block;
+        justify-content: flex-end;
+        padding: 1em;
+    }
+
+    .toCartWrapper
+    {
+        display: block;
+        justify-content: flex-end;
+        padding: 1em;
+    }
+
+    .quantity-amount
+    {
+        width: 40px;
+        text-align: center;
+        font-size: 20px;
+    }
+
     .topnav .search-container {
         float: none;
     }

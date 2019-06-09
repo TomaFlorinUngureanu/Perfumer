@@ -1,19 +1,21 @@
 <?php
 ob_start();
-require_once('../php/Settings.php');
-require_once('../php/utils/GoogleLoginApi.php');
+require_once('../../config/Settings.php');
+require_once('../../backend/utils/GoogleLoginApi.php');
 require_once('../../libs/PHPMailer_5.2.4/class.phpmailer.php');
-require_once('utils/MailFunctionality.php');
+require_once('../../backend/utils/MailFunctionality.php');
 
 GoogleLoginApi::startSession();
 $mailFunctionality = new MailFunctionality();
 $mailFunctionality->setFields();
+$redirect =  urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email') .
+    '&redirect_uri=' . urlencode(CLIENT_REDIRECT_URL) . '&response_type=code&client_id=' . CLIENT_ID .
+    '&access_type=online';
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
     <title>Perfumer Contact</title>
     <style>
@@ -52,18 +54,16 @@ $mailFunctionality->setFields();
 
     <?php if (!isset($_SESSION["userName"])) : ?>
         <a href="https://accounts.google.com/o/oauth2/auth?scope=
-    <?= urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email') .
-        '&redirect_uri=' . urlencode(CLIENT_REDIRECT_URL) . '&response_type=code&client_id=' . CLIENT_ID .
-        '&access_type=online' ?>" style="float:right">Login</a>
+    <?= $redirect ?>" style="float:right">Login</a>
     <?php else : ?>
-        <a style="float:right">Logout</a>
+        <a style="float:right" href="../../backend/utils/logout.php">Logout</a>
     <?php endif; ?>
 
     <a href="PerfumerContact.php" style="float:right">Contact</a>
     <div class="search-container">
         <form action="/action_page.php">
             <input type="text" placeholder="Search.." name="search">
-            <button type="submit"><i class="fa fa-search"></i></button>
+            <button type="submit">Go!</button>
         </form>
     </div>
 </div>
