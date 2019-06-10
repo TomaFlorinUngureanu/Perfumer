@@ -59,7 +59,7 @@ function loadXMLDoc() {
             wrapperReborn.setAttribute('id', 'fragranceGridWrapper');
             theParent.appendChild(wrapperReborn);
 
-            //console.log(this.responseText);
+            console.log(this.responseText);
             const response = JSON.parse(this.responseText);
             const size = Object.keys(response).length;
             const wrapper = document.getElementById("fragranceGridWrapper");
@@ -300,16 +300,16 @@ function addToCart() {
     let quantityAmountArray = [quantityAmount];
 
     let pricePerItemElement = document.getElementById("fragrancePrice");
-    if(pricePerItemElement === null || pricePerItemElement.innerText ==='')
-    {
+    if (pricePerItemElement === null || pricePerItemElement.innerText === '') {
         alert("Could not retrieve the price of the item!");
         return false;
     }
 
     let pricePerItem = pricePerItemElement.innerText;
-    pricePerItem = pricePerItem.replace(' RON','');
+    pricePerItem = pricePerItem.replace(' RON', '');
     let cost = pricePerItem * quantityAmount;
-    let costArray = [cost];
+    let costString = cost.toString();
+    let costArray = [costString];
 
     let xmlhttp;
 
@@ -319,24 +319,33 @@ function addToCart() {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
+    let fragranceJson = JSON.stringify(fragranceIdArray);
+    let quantityJson = JSON.stringify(fragranceQuantityOption);
+    let quantityAmountJson = JSON.stringify(quantityAmountArray);
+    let costJson = JSON.stringify(costArray);
+
     xmlhttp.open("POST", "../../backend/utils/AddToCart.php", true);
     xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
-
     xmlhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            if (this.responseText === "You must login first!") {
-                alert(this.responseText);
-                return false;
-            }
-            else {
-                console.log(this.responseText);
-            }
+
+            console.log(this.responseText);
         }
     };
 
-    xmlhttp.send("&fragranceId=" + JSON.stringify(fragranceIdArray) +
-        "&fragranceOption=" + JSON.stringify(fragranceQuantityOption) +
-        "&amount=" + JSON.stringify(quantityAmountArray) +
-        "&cost=" + JSON.stringify(costArray));
+    xmlhttp.send("&fragranceCartId=" + fragranceJson +
+        "&fragranceCartOption=" + quantityJson +
+        "&amountCart=" + quantityAmountJson +
+        "&costCart=" + costJson);
+}
+
+function updateQuantities()
+{
+
+}
+
+function deleteFromCart()
+{
+
 }

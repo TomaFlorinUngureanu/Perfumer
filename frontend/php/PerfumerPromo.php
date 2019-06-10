@@ -50,11 +50,10 @@ $perfumerController = new PerfumeController();
 
     <?php if (!isset($_SESSION["userName"])) : ?>
         <a href="https://accounts.google.com/o/oauth2/auth?scope=
-    <?= urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email') .
-        '&redirect_uri=' . urlencode(CLIENT_REDIRECT_URL) . '&response_type=code&client_id=' . CLIENT_ID .
-        '&access_type=online' ?>" style="float:right">Login</a>
+    <?= $redirect ?>" style="float:right">Login</a>
     <?php else : ?>
         <a style="float:right" href="../../backend/utils/logout.php">Logout</a>
+        <a href="PerfumerMyProfile.php">My Profile</a>
     <?php endif; ?>
 
     <a href="PerfumerContact.php" style="float:right">Contact</a>

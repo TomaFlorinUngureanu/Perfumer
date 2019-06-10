@@ -36,10 +36,25 @@ class PerfumeController
         return $price;
     }
 
+    public function getSingleSpecificFragrance($fragranceId)
+    {
+        $sqlQuery = 'select * from parfumuri where id=' . $fragranceId;
+        $fragranceArray = array();
+
+        if (!($stmt = oci_parse($this->conn, $sqlQuery)))
+        {
+            echo "Filtering failed";
+        } else
+        {
+            oci_execute($stmt);
+            $fragranceArray = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_NULLS);
+        }
+
+        return $fragranceArray;
+    }
+
     public function getSpecificFragrance($fragranceId, $option)
     {
-        var_dump($fragranceId);
-        var_dump($option);
         $fragranceArray = array();
         $specificFragranceCursor = oci_new_cursor($this->conn);
         $stmt = oci_parse($this->conn, 'begin :result := SPECIFICPERFUME(:id); end;');
@@ -57,31 +72,18 @@ class PerfumeController
         {
             $option = 1;
         }
+
         $specificQuantityArray =  $fragranceArray[$option];
         return $specificQuantityArray;
     }
 
     public function filterBy($brand, $note, $price, $occasion, $season, $gender)
     {
-//        printf("<br/>");
-//        printf($brand);
-//        printf("<br/>");
-//        printf($note);
-//        printf("<br/>");
-//        printf($price);
-//        printf("<br/>");
-//        printf($occasion);
-//        printf("<br/>");
-//        printf($season);
-//        printf("<br/>");
-//        printf($gender);
-//        printf("<br/>");
 
         $filteredCursor = oci_new_cursor($this->conn);
         if (!($stmt = oci_parse($this->conn,
             'begin :result := lista_parfumuri_filtrare(:occasion, :brand, :note, :season, :price, :gender); end;')))
         {
-            var_dump("HERE");
             echo "Filtering failed";
         } else
         {
@@ -97,31 +99,21 @@ class PerfumeController
         }
 
         $fragranceList = array();
-        //var_dump("Starting");
 
         while (($row = oci_fetch_array($filteredCursor, OCI_ASSOC + OCI_RETURN_NULLS)) != false)
         {
-          //  var_dump($row);
             array_push($fragranceList, $row);
         }
-        //var_dump("Ending");
-        //printf("<br/>");
-        //var_dump($fragranceList);
 
         for ($i = 0; $i < sizeof($fragranceList); $i++)
         {
-            //var_dump($fragranceList[$i]['POZA']);
             foreach ($fragranceList[$i] as $key => $value)
             {
                 $text = str_replace("\u0026amp;", "&", $value);
                 $text = str_replace("\u0027", "'", $value);
                 $fragranceList[$i][$key] = $text;
             }
-            //var_dump($fragranceList[$i]['POZA']);
         }
-
-        //printf("<br/>");
-        //var_dump($fragranceList);
 
         oci_free_statement($stmt);
         oci_free_cursor($filteredCursor);

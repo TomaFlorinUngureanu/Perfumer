@@ -8,8 +8,7 @@
     padding-right: 20px;
 }
 
-.specificPerfumeText
-{
+.specificPerfumeText {
     position: relative;
     top: 50%;
     transform: translateX(+5%);
@@ -26,35 +25,31 @@
     clear: both;
 }
 
-.quantityWrapper
-{
+.quantityWrapper {
     display: flex;
     justify-content: flex-end;
     padding: 1em;
 }
 
-.toCartWrapper
-{
+.toCartWrapper {
     display: flex;
     justify-content: flex-end;
     padding: 1em;
 }
 
-.quantity-amount
-{
+.quantity-amount {
     width: 40px;
     text-align: center;
     font-size: 20px;
 }
 
-.ml100Button:active, .ml50Button:active, .ml150Button:active, .ml200Button:active{
+.ml100Button:active, .ml50Button:active, .ml150Button:active, .ml200Button:active {
     background-color: red;
     box-shadow: 0 5px #666;
     transform: translateY(4px);
 }
 
-.minusButton, .plusButton, .toCartButton
-{
+.minusButton, .plusButton, .toCartButton {
     background-color: red;
     border: none;
     color: white;
@@ -77,13 +72,17 @@
     font-size: 20px;
     cursor: pointer;
 }
-.minusButton:active, .plusButton:active, .toCartButton:active, .ml50Button:active  {
+
+.minusButton:active, .plusButton:active, .toCartButton:active, .ml50Button:active, .ml100Button:active,
+.ml150Button:active, .ml200Button:active {
     background-color: red;
     box-shadow: 0 5px #666;
     transform: translateY(4px);
 }
 
-.button:hover {background-color: red}
+.button:hover {
+    background-color: red
+}
 
 body {
     font-family: Arial, Helvetica, sans-serif;
@@ -294,8 +293,7 @@ body {
         transform: translateX(+10%);
     }
 
-    .specificPerfumeText
-    {
+    .specificPerfumeText {
         width: 100%;
         transform: translateX(+50%);
     }
@@ -305,13 +303,11 @@ body {
         width: 50%;
     }
 
-    .quantityWrapper,  .toCartWrapper
-    {
+    .quantityWrapper, .toCartWrapper {
         display: block;
     }
 
-    .quantity-amount
-    {
+    .quantity-amount {
         width: 40px;
         font-size: 20px;
     }
@@ -349,8 +345,7 @@ body {
         padding-right: 20px;
     }
 
-    .specificPerfumeText
-    {
+    .specificPerfumeText {
         position: relative;
         top: 50%;
         transform: translateX(+25%);
@@ -361,22 +356,19 @@ body {
         width: 50%;
     }
 
-    .quantityWrapper
-    {
+    .quantityWrapper {
         display: block;
         justify-content: flex-end;
         padding: 1em;
     }
 
-    .toCartWrapper
-    {
+    .toCartWrapper {
         display: block;
         justify-content: flex-end;
         padding: 1em;
     }
 
-    .quantity-amount
-    {
+    .quantity-amount {
         width: 40px;
         text-align: center;
         font-size: 20px;

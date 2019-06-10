@@ -48,6 +48,7 @@ $_SESSION["userEmail"] = $userInfo['email'];
     </div>
     <a href="PerfumerShoppingCart.php" style="float:right">Shopping Cart</a>
     <a style="float:right" href="../../backend/utils/logout.php">Logout</a>
+    <a href="PerfumerMyProfile.php">My Profile</a>
     <a href="PerfumerContact.php" style="float:right">Contact</a>
     <div class="search-container">
         <form action="/action_page.php">

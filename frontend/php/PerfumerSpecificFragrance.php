@@ -62,10 +62,9 @@ $perfumeModel->setModel($specificFragranceArray);
 
     <?php if (!isset($_SESSION["userName"])) : ?>
         <a id="LoginStatus" href="https://accounts.google.com/o/oauth2/auth?scope=
-    <?= urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email') .
-        '&redirect_uri=' . urlencode(CLIENT_REDIRECT_URL) . '&response_type=code&client_id=' . CLIENT_ID .
-        '&access_type=online' ?>" style="float:right">Login</a>
+    <?= $redirect ?>" style="float:right">Login</a>
     <?php else : ?>
+        <a href="PerfumerMyProfile.php">My Profile</a>
         <a id="LoginStatus" style="float:right" href="../../backend/utils/logout.php">Logout</a>
     <?php endif; ?>
 
@@ -120,8 +119,8 @@ $perfumeModel->setModel($specificFragranceArray);
                     <button type="button" class="toCartButton" onclick="addToCart()">Add to cart</button>
                 </div>
             </div>
-            <script src="../scripts/fragranceQuantity.js"></script>
-            <script src="../scripts/ajaxRelated.js">checkStock()</script>
+            <script src="../scripts/fragranceQuantity.js?v=2"></script>
+            <script src="../scripts/ajaxRelated.js?v=2">checkStock()</script>
             <div class="resemblingFragrancesWrapper">
             </div>
         </div>

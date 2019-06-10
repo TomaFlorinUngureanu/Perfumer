@@ -14,3 +14,4 @@ if (isset($_POST['fragranceId']) && isset($_POST['fragranceQuantity']))
 }
 
 echo $stock;
+return $stock;

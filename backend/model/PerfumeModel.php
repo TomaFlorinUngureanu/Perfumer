@@ -29,6 +29,8 @@ class PerfumeModel
         $this->setGender($specificFragranceArray['SEX']);
     }
 
+
+
     /**
      * @return null
      */
@@ -96,6 +98,7 @@ class PerfumeModel
     public function __construct()
     {
     }
+
 
     /**
      * @return null

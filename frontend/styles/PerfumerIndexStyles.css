@@ -34,18 +34,6 @@ body {
     background: #f1f1f1;
 }
 
-.header {
-    padding: 10px;
-    text-align: center;
-    background: white;
-}
-
-.header h1 {
-    font-family: "Tangerine", serif;
-    font-size: 80px;
-    padding-top: -10px;
-}
-
 .header img {
     float: left;
     object-fit: none;
@@ -110,6 +98,18 @@ body {
     margin-top: 20px;
 }
 
+.header {
+    padding: 10px;
+    text-align: center;
+    background: white;
+}
+
+.header h1 {
+    font-family: "Tangerine", serif;
+    font-size: 60px;
+    padding-top: -10px;
+}
+
 .topnav .search-container {
     float: right;
 }
@@ -117,7 +117,7 @@ body {
 .topnav input[type=text] {
     padding: 6px;
     margin-top: 8px;
-    font-size: 17px;
+    font-size: 15px;
     border: none;
 }
 
@@ -127,10 +127,24 @@ body {
     margin-top: 8px;
     margin-right: 16px;
     background: #ddd;
-    font-size: 17px;
+    font-size: 15px;
     border: none;
     cursor: pointer;
 }
+
+.topnav .search-container button:hover {
+    background: #ccc;
+}
+
+.container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
 
 .topnav .search-container button:hover {
     background: #ccc;
