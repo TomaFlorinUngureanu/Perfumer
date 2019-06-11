@@ -1,5 +1,5 @@
 <?php
-//ob_start();
+ob_start();
 require_once ('../utils/GoogleLoginApi.php');
 require_once ('../database/DbConnection.php');
 require_once ('../controller/PerfumeController.php');

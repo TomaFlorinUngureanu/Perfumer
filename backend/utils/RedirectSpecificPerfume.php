@@ -7,7 +7,6 @@ GoogleLoginApi::startSession();
 
 $fragranceId = json_decode($_POST["fragranceId"]);
 $fragranceQuantity = null;
-var_dump($fragranceId);
 $_SESSION["fragranceId"] = $fragranceId;
 if(isset($_POST["fragranceOption"]))
 {

@@ -2,8 +2,9 @@
 ob_start();
 require_once('../../config/Settings.php');
 require_once('../../backend/utils/GoogleLoginApi.php');
-require_once('../../libs/PHPMailer_5.2.4/class.phpmailer.php');
-require_once('../../backend/utils/MailFunctionality.php');
+require_once('../../backend/database/DbConnection.php');
+require_once('../../backend/model/PerfumeModel.php');
+require_once ('../../backend/controller/UserDataController.php');
 
 GoogleLoginApi::startSession();
 ?>
@@ -14,7 +15,7 @@ GoogleLoginApi::startSession();
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
     <title>Perfumer Contact</title>
     <style>
-        <?php include '../styles/PerfumerContactStyles.css'; ?>
+        <?php include '../styles/PerfumerMyProfileStyles.css'; ?>
     </style>
 </head>
 
@@ -29,42 +30,60 @@ GoogleLoginApi::startSession();
     <a href="PerfumerIndex.php">Home</a>
     <a href="PerfumerPromo.php">Promo</a>
     <a href="PerfumerFragrances.php">Fragrances</a>
-    <div class="dropdown">
-        <button class="dropbtn">Brands
-            <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content">
-            <a href="#">Lancome</a>
-            <a href="#">Paco Rabanne</a>
-            <a href="#">Hugo Boss</a>
-            <a href="#">Versace</a>
-            <a href="#">Armani</a>
-            <a href="#">Calvin Klein</a>
-            <a href="#">Chanel</a>
-            <a href="#">Yves Saint-Laurent</a>
-            <a href="#">Dolce & Gabanna</a>
-        </div>
-    </div>
     <a href="PerfumerShoppingCart.php" style="float:right">Shopping Cart</a>
-    <a style="float:right" href="../../backend/utils/logout.php">Logout</a>
+    <a style="float:right" href="../../backend/utils/Logout.php">Logout</a>
     <a href="PerfumerMyProfile.php">My Profile</a>
     <a href="PerfumerContact.php" style="float:right">Contact</a>
-    <div class="search-container">
-        <form action="/action_page.php">
-            <input type="text" placeholder="Search.." name="search">
-            <button type="submit">Go!</button>
-        </form>
-    </div>
 </div>
 <div class="contactForm">
-    <label for="name">Name:</label>
-    <input>
-    <label for="email">Email:</label>
-    <input>
-    <label for="occasions">Preferred occasions:</label>
-    <input>
-    <label for="notes">My favorite notes:</label>
-    <input>
+    <h3>Name:</h3>
+    <p id="userName"><?= $_SESSION["userName"] ?></p>
+    <br>
+    <h3>Email:</h3>
+    <p id="userEmail"><?= $_SESSION["userEmail"] ?></p>
+    <br>
+    <h3>Notes</h3>
+    <div class="fragranceNotes" id="fragranceNotes">
+        <?php foreach (PerfumeModel::notes as $note): ?>
+            <label class="container"><?= $note ?>
+                <input type="checkbox" value="<?= $note ?>" id="notes" name="notes[]">
+                <span class="checkmark"></span>
+            </label>
+        <?php endforeach; ?>
+    </div>
+    <h3>Seasons</h3>
+    <div class="fragranceSeason">
+        <?php foreach (PerfumeModel::seasons as $season): ?>
+            <label class="radioContainer"><?= $season ?>
+                <input type="radio" checked="checked" value="<?= $season ?>" id="seasons" name="seasons[]">
+                <span class="radioCheckmark"></span>
+            </label>
+        <?php endforeach; ?>
+    </div>
+    <h3>Occasion</h3>
+    <div class="fragranceOccasions">
+        <?php foreach (PerfumeModel::occasions as $occasion): ?>
+            <label class="radioContainer"><?= $occasion ?>
+                <input type="radio" checked="checked" value="<?= $occasion ?>" id="occasions" name="occasions[]">
+                <span class="radioCheckmark"></span>
+            </label>
+        <?php endforeach; ?>
+    </div>
+    <script src="../scripts/limitCheckBoxProfile.js"></script>
+    <br>
+    <label for="address1">My delivery address
+    <br>
+    <p id="userAddress" class="userAddress"></p>
+    <input type="text" name="subject" id="inputDeliveryAddress" class="inputDeliveryAddress" placeholder="Enter your delivery address..">
+    </label>
+    <br><br>
+    <div class="UpdateInfo">
+        <button onclick="setUserAddress()">Set user address</button>
+        <br><br>
+        <button onclick="updateUserData()">Update user info</button>
+    </div>
+    <script src="../scripts/updateUserInfo.js"></script>
+    <script src="../scripts/ajaxRelated.js"></script>
 </div>
 </body>
 </html>

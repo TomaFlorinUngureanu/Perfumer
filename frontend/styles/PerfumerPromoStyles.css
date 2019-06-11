@@ -2,79 +2,40 @@
     box-sizing: border-box;
 }
 
-.minusButton, .plusButton, .updateQuantityButton, .deleteFromCart {
-    background-color: red;
-    border: none;
-    color: white;
-    padding: 2px 30px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.updateQuantityButton
-{
-    padding: 1em;
-    transform: translateX(15%);
-}
-
-.minusButton:active, .plusButton:active, .deleteFromCart:active {
-    background-color: red;
-    box-shadow: 0 5px #666;
-    transform: translateY(4px);
-}
-
-.updateQuantityButton:active
-{
-    background-color: red;
-    box-shadow: 0 5px #666;
-    transform: translate3d(15%,4px,0);
-}
-
-.quantityWrapper {
-    display: flex;
-    padding: 1em;
-}
-
-.shoppingCartImageWrapper {
-    float: left;
-    width: 50%;
-    transform: translateX(+5%);
-}
-
-.shoppingCartImageWrapper img
-{
-    transform: translateX(+3%);
-}
-
-.shoppingCartText {
-    position: relative;
-    top: 50%;
-    transform: translateX(+5%);
-}
-
-.shoppingCartTextWrapper {
-    float: right;
-    width: 50%;
-}
-
-.shoppingCartFragrance:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-.shoppingCartPicture {
-    width: 35%;
-    height: auto;
-}
-
 body {
     font-family: Arial, Helvetica, sans-serif;
     padding: 10px;
     background: #f1f1f1;
+}
+
+.clearanceSalesGrid
+{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: minmax(100px, auto);
+    grid-gap: 1rem;
+}
+
+.fragranceGrid .centerFragrancePicture
+{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.fragranceGrid p
+{
+    text-align:center;
+    font-size: 12px;
+    color:red;
+    vertical-align: middle;
+}
+
+.fragranceGrid img
+{
+    height: 10%;
+    width: auto;
 }
 
 /* Header/Blog Title */
@@ -111,19 +72,10 @@ body {
     color: black;
 }
 
-/* Create two unequal columns that floats next to each other */
-/* Right column */
-.leftcolumn {
-    float: left;
-    width: 25%;
-    background-color: #f1f1f1;
-    padding-right: 20px;
-}
-
 /* Left column */
 .rightcolumn {
     float: right;
-    width: 75%;
+    width: 100%;
 }
 
 /* Fake image */
@@ -193,6 +145,116 @@ body {
     background: #ccc;
 }
 
+.container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 18px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+    background-color: #ff0000;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.slidecontainer {
+    width: 100%;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 25px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: #ff0000;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+.footer {
+    display: table;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
 .dropdown {
     float: left;
     overflow: hidden;
@@ -243,8 +305,21 @@ body {
 
 /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 800px) {
+    .fragranceGrid img
+    {
+        display: block;
+        height: 10%;
+        width: auto;
+    }
 
-    .leftcolumn, .rightcolumn {
+    .clearanceSalesGrid
+    {
+        display: block;
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: minmax(100px, auto);
+    }
+
+   .rightcolumn {
         width: 100%;
         padding: 0;
     }
@@ -288,7 +363,7 @@ body {
 }
 
 @media screen and (max-width: 600px) {
-    .leftcolumn, .rightcolumn {
+     .rightcolumn {
         width: 100%;
         padding: 0;
     }
@@ -351,17 +426,4 @@ body {
         padding: 10px;
         font-size: 40px;
     }
-}
-
-.button {
-    background-color: red;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    cursor: pointer;
-    width: 100%;
 }

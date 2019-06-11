@@ -1,5 +1,5 @@
 let checkboxgroup = document.getElementById('fragranceNotes').getElementsByTagName("input");
-let limit = 3;
+let limit = 1;
 for (let i = 0; i < checkboxgroup.length; i++) {
     checkboxgroup[i].onclick = function () {
         let checkedcount = 0;

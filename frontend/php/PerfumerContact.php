@@ -8,6 +8,10 @@ require_once('../../backend/utils/MailFunctionality.php');
 GoogleLoginApi::startSession();
 $mailFunctionality = new MailFunctionality();
 $mailFunctionality->setFields();
+
+$redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email') .
+    '&redirect_uri=' . urlencode(CLIENT_REDIRECT_URL) . '&response_type=code&client_id=' . CLIENT_ID .
+    '&access_type=online';
 ?>
 
 <!DOCTYPE html>
@@ -31,39 +35,17 @@ $mailFunctionality->setFields();
     <a href="PerfumerIndex.php">Home</a>
     <a href="PerfumerPromo.php">Promo</a>
     <a href="PerfumerFragrances.php">Fragrances</a>
-    <div class="dropdown">
-        <button class="dropbtn">Brands
-            <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content">
-            <a href="#">Lancome</a>
-            <a href="#">Paco Rabanne</a>
-            <a href="#">Hugo Boss</a>
-            <a href="#">Versace</a>
-            <a href="#">Armani</a>
-            <a href="#">Calvin Klein</a>
-            <a href="#">Chanel</a>
-            <a href="#">Yves Saint-Laurent</a>
-            <a href="#">Dolce & Gabanna</a>
-        </div>
-    </div>
     <a href="PerfumerShoppingCart.php" style="float:right">Shopping Cart</a>
 
     <?php if (!isset($_SESSION["userName"])) : ?>
         <a href="https://accounts.google.com/o/oauth2/auth?scope=
     <?= $redirect ?>" style="float:right">Login</a>
     <?php else : ?>
-        <a style="float:right" href="../../backend/utils/logout.php">Logout</a>
+        <a style="float:right" href="../../backend/utils/Logout.php">Logout</a>
         <a href="PerfumerMyProfile.php">My Profile</a>
     <?php endif; ?>
 
     <a href="PerfumerContact.php" style="float:right">Contact</a>
-    <div class="search-container">
-        <form action="/action_page.php">
-            <input type="text" placeholder="Search.." name="search">
-            <button type="submit">Go!</button>
-        </form>
-    </div>
 </div>
 <div class="contactForm">
     <h3>Send us some feedback</h3>

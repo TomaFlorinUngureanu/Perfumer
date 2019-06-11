@@ -78,7 +78,6 @@ class CommandController
 
         for ($i = 0; $i < sizeof($fragranceArray); $i++)
         {
-            //var_dump($fragranceList[$i]['POZA']);
             foreach ($fragranceArray[$i] as $key => $value)
             {
                 $text = str_replace("\u0026amp;", "&", $value);
@@ -90,59 +89,35 @@ class CommandController
         return $fragranceArray;
     }
 
-    public function cleanModel(PerfumeModel &$perfumeModel)
+    public function eraseFromShoppingCart($fragranceId, $commandId, $fragranceQuantity, $cost, $email)
     {
-        $text = str_replace("\u0026amp;", "&", $perfumeModel->getName());
-        $perfumeModel->setName($text);
-        $text = str_replace("\u0027", "'", $perfumeModel->getName());
-        $perfumeModel->setName($text);
-
-        $text = str_replace("\u0026amp;", "&", $perfumeModel->getBrand());
-        $perfumeModel->setBrand($text);
-        $text = str_replace("\u0027", "'", $perfumeModel->getBrand());
-        $perfumeModel->setBrand($text);
-
-    }
-
-    public function printShoppingCart($fragranceArray)
-    {
-        $perfumeModel = new PerfumeModel();
-        $perfumeController = new PerfumeController();
-        $perfumeWrapperArray = array();
-        $id = 0;
-        foreach ($fragranceArray as $row)
+        $sqlQuery = 'begin :message := STERGERE_CART(:p_id, :p_idparfum, :p_email, :p_cantitate, :p_cost); end;';
+        $resultVar = '';
+        if (!($stmt = oci_parse($this->conn, $sqlQuery)))
         {
-            $fragranceArray = $perfumeController->getSingleSpecificFragrance($row['ID']);
-            $perfumeModel->setModel($fragranceArray);
-            $this->cleanModel($perfumeModel);
+            echo "Parsing failed";
+        } else
+        {
+            $commandIdInt = intval($commandId);
+            $fragranceIdInt = intval($fragranceId);
+            $fragranceNumber = intval($fragranceQuantity);
+            $costInt = intval($cost);
 
-            array_push($perfumeWrapperArray,
-            "<div class=\"shoppingCartFragrance\">" .
-                    "<div class=\"shoppingCartImageWrapper\" id=\"shoppingCartImageWrapper\"> " .
-                        "<img src=\"" . $perfumeModel->getPicture() . "\" alt=\"fragrance picture\" class=\"shoppingCartPicture\">" .
-                    "<div class=\"quantityWrapper\">
-                        <button type=\"button\" class=\"minusButton\" onclick=\"decrementShopCart(this.id)\" id=\"quantity-amount-" . $id . "\">-</button>
-                        <input style=\"width: 40px; text-align: center;font-size: 20px;\" type=\"text\" class=\"quantity-amount-" . $id . "\" id=\"quantity-amount-" . $id . "\" value=\"" . $row['CANTITATE'] . "\" readonly/>
-                        <button type=\"button\" class=\"plusButton\" onclick=\"incrementValue()\">+</button>".
-                    "</div>" .
-                    "</div>" .
-                    "<div class=\"shoppingCartTextWrapper\" id=\"shoppingCartTextWrapper\">" .
-                        "<div class=\"shoppingCartText\" id=\"shoppingCartText\"> " .
-                            "<button type=\"button\" class=\"plusButton\" onclick=\"deleteFromCart()\">X</button>".
-                            "<p class=\"shoppingCartTitle\" id=\"shoppingCartTitle\">Name: " . $perfumeModel->getName() . "</p>" .
-                            "<p class=\"shoppingCartBrand\" id=\"shoppingCartBrand\">Brand: " . $perfumeModel->getBrand() . "</p>" .
-                            "<p class=\"shoppingCartCost\" id=\"shoppingCartCost\">" . $row['COST'] . " RON</p>" .
-                            "<p class=\"shoppingCartNumber\" id=\"shoppingCartNumber\">No. of items: " . $row['CANTITATE'] . "</p>" .
-                            "<p class=\"shoppingCartQuantity\" id=\"shoppingCartQuantity\">Quantity: " . $perfumeModel->getQuantity() . "</p>" .
-                    "</div>" .
-                    "</div>" .
-                "</div>" .
-                "<br>");
-            $id++;
+            oci_bind_by_name($stmt, ':message', $resultVar, 400, SQLT_CHR);
+            oci_bind_by_name($stmt, ':p_id', $commandIdInt);
+            oci_bind_by_name($stmt, ':p_idparfum', $fragranceIdInt);
+            oci_bind_by_name($stmt, ':p_email', $email);
+            oci_bind_by_name($stmt, ':p_cantitate', $fragranceNumber);
+            oci_bind_by_name($stmt, ':p_cost', $costInt);
+            oci_execute($stmt);
         }
-        array_push($perfumeWrapperArray,
-        "<button type=\"button\" class=\"updateQuantityButton\" onclick=\"updateQuantities()\">Update Quantities</button><br><br><br>");
-        return implode("\n", $perfumeWrapperArray);
+
+        if ($resultVar != 'Succes!')
+        {
+            return false;
+        }
+
+        return $resultVar;
     }
 
     public function addToShoppingCart(PerfumeModel $perfumeModel, $cost, $amount, $userEmail): bool
@@ -189,6 +164,7 @@ class CommandController
 
         if ($resultVar != 'Succes!')
         {
+            var_dump("bla");
             return false;
         }
 

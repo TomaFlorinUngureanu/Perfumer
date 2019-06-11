@@ -11,13 +11,17 @@ $fragranceId = json_decode($_SESSION["fragranceId"][0]);
 $fragranceOption = null;
 if (isset($_SESSION["fragranceOption"]) && sizeof($_SESSION["fragranceOption"]) != 0)
 {
-    $fragranceOption = json_decode($_SESSION["fragranceOption"][0]); //0,1,2,3
+    $fragranceOption = json_decode($_SESSION["fragranceOption"][0]);
 }
 
 $perfumeController = new PerfumeController();
 $specificFragranceArray = $perfumeController->getSpecificFragrance($fragranceId, $fragranceOption);
 $perfumeModel = new PerfumeModel();
 $perfumeModel->setModel($specificFragranceArray);
+
+$redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email') .
+    '&redirect_uri=' . urlencode(CLIENT_REDIRECT_URL) . '&response_type=code&client_id=' . CLIENT_ID .
+    '&access_type=online';
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +34,7 @@ $perfumeModel->setModel($specificFragranceArray);
     </style>
 </head>
 
-<body>
+<body onload="getNewestReleases()">
 
 <div class="header">
     <div style="display: flex; justify-content: center;">
@@ -42,22 +46,6 @@ $perfumeModel->setModel($specificFragranceArray);
     <a href="PerfumerIndex.php">Home</a>
     <a href="PerfumerPromo.php">Promo</a>
     <a href="PerfumerFragrances.php">Fragrances</a>
-    <div class="dropdown">
-        <button class="dropbtn">Brands
-            <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content">
-            <a href="#">Lancome</a>
-            <a href="#">Paco Rabanne</a>
-            <a href="#">Hugo Boss</a>
-            <a href="#">Versace</a>
-            <a href="#">Armani</a>
-            <a href="#">Calvin Klein</a>
-            <a href="#">Chanel</a>
-            <a href="#">Yves Saint-Laurent</a>
-            <a href="#">Dolce & Gabanna</a>
-        </div>
-    </div>
     <a href="PerfumerShoppingCart.php" style="float:right">Shopping Cart</a>
 
     <?php if (!isset($_SESSION["userName"])) : ?>
@@ -65,16 +53,10 @@ $perfumeModel->setModel($specificFragranceArray);
     <?= $redirect ?>" style="float:right">Login</a>
     <?php else : ?>
         <a href="PerfumerMyProfile.php">My Profile</a>
-        <a id="LoginStatus" style="float:right" href="../../backend/utils/logout.php">Logout</a>
+        <a id="LoginStatus" style="float:right" href="../../backend/utils/Logout.php">Logout</a>
     <?php endif; ?>
 
     <a href="PerfumerContact.php" style="float:right">Contact</a>
-    <div class="search-container">
-        <form action="/action_page.php">
-            <input type="text" placeholder="Search.." name="search">
-            <button type="submit">Go!</button>
-        </form>
-    </div>
 </div>
 
 <div class="row">
@@ -124,22 +106,20 @@ $perfumeModel->setModel($specificFragranceArray);
             <div class="resemblingFragrancesWrapper">
             </div>
         </div>
+        <div class="card">
+            <div class="resemblingFragranceWrapper" id="resemblingFragranceWrapper">
+
+            </div>
+        </div>
     </div>
     <div class="leftcolumn">
         <div class="card">
             <h2>Newest releases</h2>
-            <h5>On the DD/MM/YYYY the X brand released a new frangrance with name Z</h5>
-            <div class="fakeimg" style="height:200px;">Image</div>
-            <p>Notes of the fragrance</p>
-            <p>Some description of the fragrance.</p>
+            <div class="newestReleasesWrapper" id="newestReleasesGrid">
+                <div class="newestReleasesGrid" id="newestReleasesGrid"></div>
+            </div>
         </div>
-        <div class="card">
-            <h2>Newest releases</h2>
-            <h5>On the DD/MM/YYYY the X brand released a new frangrance with name Z</h5>
-            <div class="fakeimg" style="height:200px;">Image</div>
-            <p>Notes of the fragrance</p>
-            <p>Some description of the fragrance.</p>
-        </div>
+        <script src="../scripts/ajaxRelated.js"></script>
     </div>
 </div>
 

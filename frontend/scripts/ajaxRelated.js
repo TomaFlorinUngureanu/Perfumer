@@ -23,8 +23,19 @@ function selectedElements(tagName) {
 
 function loadXMLDoc() {
 
+    let ourRecommendation = document.getElementById('ourRecommendationWrapper');
+    if(ourRecommendation != null) {
+        ourRecommendation.parentNode.removeChild(ourRecommendation);
+    }
+    ourRecommendation = document.getElementById('ourRecommendation');
+    if(ourRecommendation != null) {
+        ourRecommendation.parentNode.removeChild(ourRecommendation);
+    }
+
     let theParent = document.getElementById("fragranceGridWrapper");
-    theParent.parentNode.removeChild(theParent);
+    if(theParent != null) {
+        theParent.parentNode.removeChild(theParent);
+    }
 
     let xmlhttp;
     const brandsArray = selectedElements('brands');
@@ -50,7 +61,7 @@ function loadXMLDoc() {
     xmlhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
 
-            console.log(this.responseText);
+            //console.log(this.responseText);
             theParent = document.getElementById('fragranceNotToDelete');
             let wrapperReborn = document.createElement("div");
 
@@ -59,7 +70,7 @@ function loadXMLDoc() {
             wrapperReborn.setAttribute('id', 'fragranceGridWrapper');
             theParent.appendChild(wrapperReborn);
 
-            console.log(this.responseText);
+            //console.log(this.responseText);
             const response = JSON.parse(this.responseText);
             const size = Object.keys(response).length;
             const wrapper = document.getElementById("fragranceGridWrapper");
@@ -72,62 +83,7 @@ function loadXMLDoc() {
             let oId = null;
 
             for (let i = 0; i < size; i++) {
-                //create the div class
-                oDiv = document.createElement("div");
-                oDiv.setAttribute('class', 'fragranceGrid');
-                oDiv.setAttribute('name', 'fragranceGrid');
-                //console.log(oDiv);
-
-                //create the img element and append it to the div class
-                oImg = document.createElement("img");
-                oImg.setAttribute('src', response[i]['POZA']);
-                oImg.setAttribute('height', '200');
-                oImg.setAttribute('width', '200');
-                oImg.setAttribute('class', 'centerFragrancePicture');
-                oImg.addEventListener("click", sendToSpecificFragrance);
-                oImg.setAttribute('id', 'fragranceImage');
-                oImg.setAttribute('name', 'fragranceImage');
-                oDiv.appendChild(oImg);
-
-                //create the title element and append it to the div class
-                oTitle = document.createElement("p");
-                oTitle.setAttribute('id', 'fragranceTitle');
-                oTitle.setAttribute('name', 'fragranceTitle');
-                oTitle.innerHTML = response[i]['NUME'];
-                //oTitle.addEventListener("click", sendToSpecificFragrance);
-                oDiv.appendChild(oTitle);
-
-                //create the title element and append it to the div class
-                oId = document.createElement("p");
-                oId.innerHTML = response[i]['ID'];
-                oId.setAttribute('id', 'fragranceId');
-                oId.setAttribute('name', 'fragranceId');
-                oId.setAttribute('hidden', 'true');
-                oDiv.appendChild(oId);
-
-                //create the brand element and append it to the div class
-                oBrand = document.createElement("p");
-                oBrand.innerHTML = response[i]['BRAND'];
-                oBrand.setAttribute('id', 'fragranceBrand');
-                oBrand.setAttribute('name', 'fragranceBrand');
-                oDiv.appendChild(oBrand);
-
-                //create the notes element and append it to the div class
-                oNotes = document.createElement("p");
-                oNotes.innerHTML = response[i]['NOTE'];
-                oNotes.setAttribute('id', 'fragranceNotes');
-                oNotes.setAttribute('name', 'fragranceNotes');
-                oDiv.appendChild(oNotes);
-
-                //create the price element and append it to the div class
-                oPrice = document.createElement("p");
-                oPrice.innerHTML = response[i]['PRET'] + " RON";
-                oPrice.setAttribute('id', 'fragrancePrice');
-                oPrice.setAttribute('name', 'fragrancePrice');
-                oDiv.appendChild(oPrice);
-
-                //console.log(wrapper);
-                wrapper.appendChild(oDiv);
+                generateHTML(wrapper, response, i);
             }
         }
     };
@@ -340,12 +296,269 @@ function addToCart() {
         "&costCart=" + costJson);
 }
 
-function updateQuantities()
+function updateQuantity() {
+    let value = [];
+    let numberOfElem = document.getElementsByClassName("shoppingCartText").length;
+    for (let elem = 0; elem < numberOfElem; elem++) {
+        let quantityElem = document.getElementsByClassName('quantity-amount-' + elem)[0];
+        let quantityParent = quantityElem.parentElement.parentElement.parentElement.getElementsByClassName("shoppingCartText")[0];
+
+        //console.log(quantityParent);
+        let fragranceName = quantityParent.getElementsByClassName("shoppingCartTitle")[0].innerHTML;
+        fragranceName = fragranceName.replace("Name: ", "");
+        let fragranceBrand = quantityParent.getElementsByClassName("shoppingCartBrand")[0].innerHTML;
+        fragranceBrand = fragranceBrand.replace("Brand: ", "");
+        let fragranceQuantity = quantityParent.getElementsByClassName("shoppingCartQuantity")[0].innerHTML;
+        fragranceQuantity = fragranceQuantity.replace("Quantity: ", "");
+        let quantityText = quantityElem.value;
+        let fragranceId = quantityParent.getElementsByClassName("fragranceShoppingCartId")[0].innerHTML;
+        let commandId = quantityParent.getElementsByClassName("shoppingCartCommandId")[0].innerHTML;
+    }
+}
+
+
+function deleteFromCart(id) {
+    let deleteElement = document.getElementById(id).parentElement;
+    console.log(deleteElement);
+    let perfumeId = [deleteElement.getElementsByClassName('fragranceShoppingCartId')[0].innerText];
+    let commandId = [deleteElement.getElementsByClassName('shoppingCartCommandId')[0].innerText];
+    let quantity = [deleteElement.getElementsByClassName('shoppingCartNumber')[0].innerText
+        .replace("No. of items: ", "")];
+    let cost = [deleteElement.getElementsByClassName('shoppingCartCost')[0].innerText
+        .replace(" RON", "")];
+
+    let xmlhttp;
+
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.open("POST", "../../backend/utils/EraseFromCart.php", true);
+    xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            console.log(this.responseText);
+        }
+    };
+
+    let perfumeIdJson = JSON.stringify(perfumeId);
+    let commandIdJson = JSON.stringify(commandId);
+    let quantityJson = JSON.stringify(quantity);
+    let costJson = JSON.stringify(cost);
+
+
+    xmlhttp.send("&fragranceId=" + perfumeIdJson +
+        "&fragranceCommandId=" + commandIdJson +
+        "&fragranceQuantity=" + quantityJson +
+        "&costCart=" + costJson);
+
+    window.location = "PerfumerShoppingCart.php";
+}
+
+function getClearanceSales() {
+    let xmlhttp;
+    let fragranceArray = [];
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.open("POST", "../../backend/utils/GetClearanceSales.php", true);
+    xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            let theParent = document.getElementById('clearanceSalesGrid');
+            const response = JSON.parse(this.responseText);
+            const size = Object.keys(response).length;
+
+            console.log(this.responseText);
+            for (let fragrance = 0; fragrance < size; fragrance++) {
+                generateHTML(theParent, response, fragrance);
+            }
+        }
+    };
+
+    xmlhttp.send();
+}
+
+function getOurRecommendation() {
+    let xmlhttp;
+    let fragranceArray = [];
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.open("POST", "../../backend/utils/GetOurRecommendation.php", true);
+    xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            let theParent = document.getElementById('ourRecommendationGrid');
+            const response = JSON.parse(this.responseText);
+            const size = Object.keys(response).length;
+            for (let fragrance = 0; fragrance < size; fragrance++) {
+                generateHTML(theParent, response, fragrance);
+            }
+        }
+    };
+
+    xmlhttp.send();
+}
+
+function getNewestReleases() {
+    let xmlhttp;
+    let fragranceArray = [];
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    let oDate = null;
+    xmlhttp.open("POST", "../../backend/utils/GetNewestReleases.php", true);
+    xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            let theParent = document.getElementById('newestReleasesGrid');
+            const response = JSON.parse(this.responseText);
+            const size = Object.keys(response).length;
+
+            for (let fragrance = 0; fragrance < size; fragrance++) {
+                generateHTML(theParent, response, fragrance);
+                let grid = document.getElementsByClassName('fragranceGrid')[fragrance];
+                oDate = document.createElement("p");
+                oDate.setAttribute('id', 'fragranceDate');
+                oDate.setAttribute('name', 'fragranceDate');
+                oDate.setAttribute('style', 'font-size: 14px');
+                oDate.innerHTML = "Launched on: " + response[fragrance]['DATA_LANSARE'];
+                grid.appendChild(oDate);
+
+                oDate = document.createElement("p");
+                oDate.setAttribute('id', 'fragranceGender');
+                oDate.setAttribute('name', 'fragranceGender');
+                oDate.setAttribute('style', 'font-size: 14px');
+                if (response[fragrance]['SEX'] === '1') {
+                    oDate.innerHTML = 'Male';
+                } else {
+                    oDate.innerHTML = 'Female';
+                }
+                grid.appendChild(oDate);
+            }
+        }
+    };
+
+    xmlhttp.send();
+}
+
+function getYouMightLike()
+{
+    let xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.open("POST", "../../backend/utils/GetYouMightLike.php", true);
+    xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            let theParent = document.getElementById('youMighLikeGrid');
+            const response = JSON.parse(this.responseText);
+            const size = Object.keys(response).length;
+            for (let fragrance = 0; fragrance < size; fragrance++) {
+                generateHTML(theParent, response, fragrance);
+            }
+        }
+    };
+
+    xmlhttp.send();
+}
+
+function getResemblingFragrances()
 {
 
 }
 
-function deleteFromCart()
-{
+function loadMultiple() {
 
+    getNewestReleases();
+    getOurRecommendation();
+    getYouMightLike();
+}
+
+function generateHTML(theParent, response, fragrance) {
+    let oDiv;
+    let oImg;
+    let oTitle;
+    let oBrand;
+    let oPrice;
+    let oNotes;
+    let oId;
+
+    //create the div class
+    oDiv = document.createElement("div");
+    oDiv.setAttribute('class', 'fragranceGrid');
+    oDiv.setAttribute('name', 'fragranceGrid');
+    oDiv.setAttribute('id', 'fragranceGrid');
+
+    //create the img element and append it to the div class
+    //console.log(response[fragrance]['POZA']);
+    oImg = document.createElement("img");
+    oImg.setAttribute('src', response[fragrance]['POZA']);
+    oImg.setAttribute('height', '200');
+    oImg.setAttribute('width', '200');
+    oImg.setAttribute('class', 'centerFragrancePicture');
+    oImg.addEventListener("click", sendToSpecificFragrance);
+    oImg.setAttribute('id', 'fragranceImage');
+    oImg.setAttribute('name', 'fragranceImage');
+    oDiv.appendChild(oImg);
+
+    //create the title element and append it to the div class
+    oTitle = document.createElement("p");
+    oTitle.setAttribute('id', 'fragranceTitle');
+    oTitle.setAttribute('name', 'fragranceTitle');
+    oTitle.innerHTML = response[fragrance]['NUME'];
+    //oTitle.addEventListener("click", sendToSpecificFragrance);
+    oDiv.appendChild(oTitle);
+
+    //create the title element and append it to the div class
+    oId = document.createElement("p");
+    oId.innerHTML = response[fragrance]['ID'];
+    oId.setAttribute('id', 'fragranceId');
+    oId.setAttribute('name', 'fragranceId');
+    oId.setAttribute('hidden', 'true');
+    oDiv.appendChild(oId);
+
+    //create the brand element and append it to the div class
+    oBrand = document.createElement("p");
+    oBrand.innerHTML = response[fragrance]['BRAND'];
+    oBrand.setAttribute('id', 'fragranceBrand');
+    oBrand.setAttribute('name', 'fragranceBrand');
+    oDiv.appendChild(oBrand);
+
+    //create the notes element and append it to the div class
+    oNotes = document.createElement("p");
+    oNotes.innerHTML = response[fragrance]['NOTE'];
+    oNotes.setAttribute('id', 'fragranceNotes');
+    oNotes.setAttribute('name', 'fragranceNotes');
+    oDiv.appendChild(oNotes);
+
+    //create the price element and append it to the div class
+    oPrice = document.createElement("p");
+    oPrice.innerHTML = response[fragrance]['PRET'] + " RON";
+    oPrice.setAttribute('id', 'fragrancePrice');
+    oPrice.setAttribute('name', 'fragrancePrice');
+    oDiv.appendChild(oPrice);
+
+    theParent.appendChild(oDiv);
 }

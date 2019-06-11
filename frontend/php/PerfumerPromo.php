@@ -8,6 +8,10 @@ require_once('../../backend/controller/PerfumeController.php');
 
 GoogleLoginApi::startSession();
 $perfumerController = new PerfumeController();
+
+$redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email') .
+    '&redirect_uri=' . urlencode(CLIENT_REDIRECT_URL) . '&response_type=code&client_id=' . CLIENT_ID .
+    '&access_type=online';
 ?>
 
 <!DOCTYPE html>
@@ -16,10 +20,10 @@ $perfumerController = new PerfumeController();
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
     <title>Perfumer Promo</title>
     <style>
-        <?php include '../styles/PerfumerPromo.css'; ?>
+        <?php include '../styles/PerfumerPromoStyles.css'; ?>
     </style>
 </head>
-<body>
+<body onload="getClearanceSales()">
 
 <div class="header">
     <div style="display: flex; justify-content: center;">
@@ -32,132 +36,30 @@ $perfumerController = new PerfumeController();
     <a href="PerfumerIndex.php">Home</a>
     <a href="PerfumerPromo.php">Promo</a>
     <a href="PerfumerFragrances.php">Fragrances</a>
-    <div class="dropdown">
-        <button class="dropbtn">Brands
-            <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content">
-            <a href="#">Lancome</a>
-            <a href="#">Paco Rabanne</a>
-            <a href="#">Hugo Boss</a>
-            <a href="#">Versace</a>
-            <a href="#">Armani</a>
-            <a href="#">Calvin Klein</a>
-            <a href="#">Chanel</a>
-        </div>
-    </div>
     <a href="PerfumerShoppingCart.php" style="float:right">Shopping Cart</a>
 
     <?php if (!isset($_SESSION["userName"])) : ?>
         <a href="https://accounts.google.com/o/oauth2/auth?scope=
     <?= $redirect ?>" style="float:right">Login</a>
     <?php else : ?>
-        <a style="float:right" href="../../backend/utils/logout.php">Logout</a>
+        <a style="float:right" href="../../backend/utils/Logout.php">Logout</a>
         <a href="PerfumerMyProfile.php">My Profile</a>
     <?php endif; ?>
 
     <a href="PerfumerContact.php" style="float:right">Contact</a>
-    <div class="search-container">
-        <form action="/action_page.php">
-            <input type="text" placeholder="Search.." name="search">
-            <button type="submit">Go!</button>
-        </form>
-    </div>
 </div>
 
 <div class="row">
-    <div class="leftcolumn" style="padding-bottom: 35px">
-        <div class="card">
-            <h2>Filters</h2>
-            <h3>Price range:</h3>
-            <div class="slidecontainer">
-                <input type="range" min="100" max="1000" value="100" class="slider" id="myRange">
-                <p>Max value: <span id="demo"></span></p>
-                <script src="../scripts/fragranceSliders.js">
-                </script>
-            </div>
-            <h3>For who?</h3>
-            <label class="container">Her
-                <input type="checkbox">
-                <span class="checkmark"></span>
-            </label>
-            <label class="container">Him
-                <input type="checkbox">
-                <span class="checkmark"></span>
-            </label>
-            <label class="container">Unisex
-                <input type="checkbox">
-                <span class="checkmark"></span>
-            </label>
-            <h3>Season</h3>
-            <div class="fragranceSeason">
-                <?php foreach (PerfumeModel::seasons as $season): ?>
-                    <label class="container"><?= $season ?>
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
-                    </label>
-                <?php endforeach; ?>
-            </div>
-            <h3>Occasion</h3>
-            <div class="fragranceOccasions">
-                <?php foreach (PerfumeModel::occasions as $occasion): ?>
-                    <label class="container"><?= $occasion ?>
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
-                    </label>
-                <?php endforeach; ?>
-            </div>
-            <h3>Brands</h3>
-            <div class="fragranceBrands">
-                <?php $perfumerController->getAllBrands(); ?>
-            </div>
-            <h3>Notes</h3>
-            <div class="fragranceNotes">
-                <?php foreach (PerfumeModel::notes as $note): ?>
-                    <label class="container"><?= $note ?>
-                        <input type="checkbox">
-                        <span class="checkmark"></span>
-                    </label>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    </div>
     <div class="rightcolumn">
         <div class="card">
-            <h3>Special discounts</h3>
-            <div class="fakeimg">
-                <p>Image with perfume #1 + price, size in ml</p>
+            <h3>Clearance Sales</h3>
+            <div class="clearanceSalesGrid" id="clearanceSalesGrid">
+
             </div>
-            <div class="fakeimg">
-                <p>Image with perfume #2 + price, size in ml</p>
-            </div>
-            <div class="fakeimg">
-                <p>Image with perfume #3 + price, size in ml</p>
-            </div>
-            <div class="fakeimg">
-                <p>Image with perfume #4 + price, size in ml</p>
-            </div>
-            <div class="fakeimg">
-                <p>Image with perfume #5 + price, size in ml</p>
-            </div>
-            <div class="fakeimg">
-                <p>Image with perfume #6 + price, size in ml</p>
-            </div>
-            <div class="fakeimg">
-                <p>Image with perfume #7 + price, size in ml</p>
-            </div>
-            <div class="fakeimg">
-                <p>Image with perfume #8 + price, size in ml</p>
-            </div>
-            <div class="fakeimg">
-                <p>Image with perfume #9 + price, size in ml</p>
-            </div>
-            <div class="fakeimg">
-                <p>Image with perfume #10 + price, size in ml</p>
-            </div>
+            <script src="../scripts/ajaxRelated.js"></script>
         </div>
         <div class="card">
-            <h3>Clearance sales</h3>
+            <h3>Special discounts</h3>
             <div class="fakeimg">
                 <p>Image with perfume #1 + price, size in ml</p>
             </div>

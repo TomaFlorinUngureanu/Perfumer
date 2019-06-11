@@ -10,6 +10,10 @@ $perfumerController = new PerfumeController();
 $minVal = $perfumerController->getMinMaxPriceSliders("asc");
 $maxVal = $perfumerController->getMinMaxPriceSliders("desc");
 $_POST = array();
+
+$redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email') .
+    '&redirect_uri=' . urlencode(CLIENT_REDIRECT_URL) . '&response_type=code&client_id=' . CLIENT_ID .
+    '&access_type=online';
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +26,7 @@ $_POST = array();
     </style>
 </head>
 
-<body>
+<body onload="getOurRecommendation()">
 
 <div class="header">
     <div style="display: flex; justify-content: center;">
@@ -35,37 +39,17 @@ $_POST = array();
     <a href="PerfumerIndex.php">Home</a>
     <a href="PerfumerPromo.php">Promo</a>
     <a href="PerfumerFragrances.php">Fragrances</a>
-    <div class="dropdown">
-        <button class="dropbtn">Brands
-            <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content">
-            <a href="#">Lancome</a>
-            <a href="#">Paco Rabanne</a>
-            <a href="#">Hugo Boss</a>
-            <a href="#">Versace</a>
-            <a href="#">Armani</a>
-            <a href="#">Calvin Klein</a>
-            <a href="#">Chanel</a>
-        </div>
-    </div>
     <a href="PerfumerShoppingCart.php" style="float:right">Shopping Cart</a>
 
     <?php if (!isset($_SESSION["userName"])) : ?>
         <a href="https://accounts.google.com/o/oauth2/auth?scope=
     <?= $redirect ?>" style="float:right">Login</a>
     <?php else : ?>
-        <a style="float:right" href="../../backend/utils/logout.php">Logout</a>
+        <a style="float:right" href="../../backend/utils/Logout.php">Logout</a>
         <a href="PerfumerMyProfile.php">My Profile</a>
     <?php endif; ?>
 
     <a href="PerfumerContact.php" style="float:right">Contact</a>
-    <div class="search-container">
-        <form action="/action_page.php">
-            <input type="text" placeholder="Search.." name="search">
-            <button type="submit">Go!</button>
-        </form>
-    </div>
 </div>
 
 <div class="row">
@@ -109,9 +93,9 @@ $_POST = array();
             <h3>Occasion</h3>
             <div class="fragranceOccasions">
                 <?php foreach (PerfumeModel::occasions as $occasion): ?>
-                    <label class="container"><?= $occasion ?>
-                        <input type="checkbox" value="<?= $occasion ?>" id="occasions" name="occasions[]">
-                        <span class="checkmark"></span>
+                    <label class="radioContainer"><?= $occasion ?>
+                        <input type="radio" checked="checked" value="<?= $occasion ?>" id="occasions" name="occasions[]">
+                        <span class="radioCheckmark"></span>
                     </label>
                 <?php endforeach; ?>
             </div>
@@ -135,6 +119,10 @@ $_POST = array();
         <div class="card">
             <div class="fragranceNotToDelete" id="fragranceNotToDelete">
                 <div class="fragranceGridWrapper" id="fragranceGridWrapper">
+                </div>
+                <h3 id="ourRecommendation">Our Recommendation</h3>
+                <div class="ourRecommendationWrapper" id="ourRecommendationWrapper">
+                    <div class="ourRecommendationGrid" id="ourRecommendationGrid"></div>
                 </div>
             </div>
         </div>
