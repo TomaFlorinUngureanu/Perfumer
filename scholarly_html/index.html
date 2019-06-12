@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Scholarly HTML</title>
+    <link rel="stylesheet" href="css/scholarly.min.css">
+  </head>
+  <body prefix="schema: http://schema.org">
+    <header>
+      <div class="banner">
+        <img src="scholarly-html.svg" width="227" height="50" alt="Scholarly HTML logo">
+        <div class="status">Community Draft</div>
+      </div>
+      <h1>Scholarly HTML</h1>
+    </header>
+
+    <div role="contentinfo">
+      <dl>
+        <dt>Autori:</dt>
+        <dd>Ungureanu Toma-Florin</dd>
+		<dd>Iavorschi Florin</dd>
+        </dd>
+      </dl>
+    </div>
+    <section typeof="sa:Abstract" id="abstract" role="doc-abstract">
+      <h2>1.Abstract</h2>
+      <p>
+      Le petit parfum este un magazin online prietenos si usor de utilizat. Site-ul pune la dispozitie vanzarea a 48000+ de parfumuri si oportunitatea de: a cauta anumite parfumuri
+      dupa anumite criterii, a-ti seta contul cu anumite preferinte, a trimite o lista personalizata bazata pe preferintele setate de tine, a putea sa transmiti un e-mail
+      administratorului site-ului; iar daca tu esti administratorul, ai puterea sa generezi rapoarte bazate pe stocuri sau vanzari in formate diverse.
+      </p>
+    </section>
+    <section id="Ghid-de-utilizare">
+            <!-- review? -->
+            <h2>2.Ghid de utilizare</h2>
+
+            <section id="Register-Login">
+              <!-- review? -->
+              <h3>2.1.Register & Login</h3>
+              <p>
+                    Login-ul se efectueaza prin intermediul unui cont Google. Nu se va realiza niciun fel de inregistrare. Aceasta metoda a fost aleasa pentru usurarea
+                    folosirii site-ului si pentru evitarea de niste "leak-uri" de informatii personale. Utilizatorul nu este obligat sa se conecteze, dar va fi nevoit
+                    daca doreste sa foloseasca Shopping Cart-ul si sa cumpere parfumuri.
+              </p>
+            </section>
+            <section id="NavBar">
+              <!-- review? -->
+              <h3>2.2.Navigation Toolbar</h3>
+              <p>
+                Bara de navigare permite circularitatea site-ului si pune la dispozitie urmatoarele pagini: Home, Promos, Fragrances, My Profile/Admin, Contact, 
+                Login/Logout, Shopping Cart. Aceasta este aflata in partea de sus a fiecarei pagini alaturi de logo-ul site-ului si titlul paginii.
+              </p>
+            </section>
+            <section id="HomePage">
+              <!-- review? -->
+              <h3>2.3.Pagina principala - Home page</h3>
+              <p>
+                Aceasta pagina ofera utilizatorului in partea din stanga o lista de 4 parfumuri ordonate descrescator dupa data de lansare, iar apoi in centru: 
+                daca acesta este logat si are preferinte setate, va primi o lista de parfumuri random care indeplinesc preferintele setate, si indiferent de 
+                starea de logare, va primi o lista de parfumuri drept recomandare fiind cele mai vandute din magazin.
+              </p>
+            </section>
+            <section id="Promos">
+              <!-- review? -->
+              <h3>2.4.Promos</h3>
+              <p>
+                Aceasta pagina ofera utilizatorului in partea din stanga o lista de 4 parfumuri ordonate descrescator dupa data de lansare, iar apoi in centru o lista 
+                de parfumuri care au numarul de bucati pe stoc mai mic de 11.
+              </p>
+            </section>
+            <section id="Fragrances">
+              <!-- review? -->
+              <h3>2.5.Fragrances</h3>
+              <p>
+                Aceasta pagina ofera utilizatorului in partea din stanga un meniu de selectare a parfumurilor in functie de pret, sex, sezon, ocazie, brand, note sau nume si un 
+                buton pentru a putea efectua o cautare de parfumuri dupa criteriile alese. In centru va primi o lista de parfumuri recomandate by default, iar cand utilizatorul 
+                va apasa pe butonul de filtrare, va primi o lista de parfumuri in functie de criteriile alese. Utilizatorul va putea apasa pe poza oricarui parfum pentru a fi 
+                redirectat catre pagina parfumului respectiv. Daca nu s-a gasit niciun parfum in functie de criteriile alese, va fi afisat un mesaj in concordanta cu problema.
+              </p>
+            </section>
+            <section id="Parfum">
+              <!-- review? -->
+              <h3>2.6.Pagina unui parfum</h3>
+              <p>
+                Aceasta pagina ofera utilizatorului in partea din stanga o lista de 4 parfumuri ordonate descrescator dupa data de lansare, iar apoi in centru detaliile despre 
+                parfumul respectiv, butoanele "50 ml", "100 ml", "150 ml" si "200 ml" (100 ml by default) care permit selectarea cantitatii dorite a parfumului respectiv, butoanele "+" si "-" care 
+                permit modificarea numarului de bucati dorit si butonul "Add to cart" care adauga parfumul respectiv cu cantitatea si numarul de bucati dorit in Shopping Cart. Iar 
+                dedesubt, acesta va primi o lista de parfumuri asemanatoare parfumului selectat in functie de brand si note.
+              </p>
+            </section>
+            <section id="MyProfile">
+              <!-- review? -->
+              <h3>2.7.My Profile</h3>
+              <p>
+                Aceasta pagina ofera utilizatorului un meniu in care isi poate seta adresa de livrare si preferintele pentru ocazie, sezon, note. Dedesubtul meniului, va fi afisata 
+                lista de comenzi finalizate in ordine descrescatoare a datei de comanda cu starea acestora.
+              </p>
+            </section>
+            <section id="Admin">
+              <!-- review? -->
+              <h3>2.8.Admin</h3>
+              <p>
+                Aceasta pagina ofera administratorului un meniu in care poate selecta dupa ce criteriu poate fi generat un raport: in functie de stoc, dupa sezon, dupa nota, dupa ocazie, 
+                dupa email-ul unui utilizator, sau dupa un interval de date; si poate selecta in ce format sa fie generat raportul: PDF, HTML, CSV.
+              </p>
+            </section>
+            <section id="Contact">
+              <!-- review? -->
+              <h3>2.9.Contact</h3>
+              <p>
+                Aceasta pagina ofera utilizatorului posibilitatea de a trimite un email administratorului, completand campurile cu informatiile necesare: Nume, Email, Subiect, Mesaj.
+              </p>
+            </section>
+            <section id="ShoppingCart">
+              <!-- review? -->
+              <h3>2.10.Shopping Cart</h3>
+              <p>
+                Este accesibila doar utilizatorilor care sunt logati. Aceasta pagina ofera utilizatorului o lista cu parfumurile alese de el, un buton "X" la fiecare parfum in parte care 
+                va elimina parfumul din Shopping Cart-ul utilizatorului, un buton "-" si un buton "+" la fiecare parfum care permit utilizatorului modificarea numarului de bucati dorit, 
+                un buton "Update Quantities" care efectueaza modificarea numarului de bucati dorit si un buton "Proceed to checkout" care finalizeaza comanda cu parfumurile din lista.
+              </p>
+            </section>
+        </section>
+       <section id="tehnologii" >
+      <h2>3.Tehnologii folosite</h2>
+            <section id="PHP">
+              <!-- review? -->
+              <h3>3.1.PHP</h3>
+              <p>
+                Folosit pentru back-end(functionalitati).
+              </p>
+            </section>
+            <section id="HTML">
+              <!-- review? -->
+              <h3>3.2.HTML</h3>
+              <p>
+                Folosit pentru front-end(design).
+              </p>
+            </section>
+            <section id="CSS">
+              <!-- review? -->
+              <h3>3.3.CSS</h3>
+              <p>
+                Folosit pentru front-end(design).
+              </p>
+            </section>
+            <section id="JavaScript">
+              <!-- review? -->
+              <h3>3.4.JavaScript</h3>
+              <p>
+                Folosit pentru client si asincronism.
+              </p>
+            </section>
+            <section id="Oracle">
+              <!-- review? -->
+              <h3>3.5.Oracle</h3>
+              <p>
+                Folosit pentru baza de date a parfumurilor.
+              </p>
+            </section>
+            <section id="PLSQL">
+              <!-- review? -->
+              <h3>3.6.PL/SQL</h3>
+              <p>
+                Folosit pentru a crea legatura dintre PHP si Oracle, usurarea dificultatii paginilor si popularea bazei de date.
+              </p>
+            </section>
+            <section id="Java">
+              <!-- review? -->
+              <h3>3.7.Java</h3>
+              <p>
+                Folosit pentru "scrap"-ul de informatii si parfumuri de pe site-ul <a href="http://www.basenotes.net/">http://www.basenotes.net/</a> utilizate de magazin. 
+              </p>
+            </section>
+    </section>
+    <section id="tehnologii" >
+      <h2>4.Sistem de versionare</h2>
+      <h3>Github</h3>
+      <a href="https://github.com/TomaFlorinUngureanu/Perfumer"><p>https://github.com/TomaFlorinUngureanu/Perfumer</p></a>
+    </section>
+  </body>
+</html>
