@@ -1,0 +1,7 @@
+create or replace FUNCTION newestReleases
+RETURN  SYS_REFCURSOR AS
+my_cursor SYS_REFCURSOR;
+BEGIN
+  OPEN my_cursor FOR SELECT * FROM (SELECT * from parfumuri where cantitate=100 and sex=1 and stoc>0 order by to_date(data_lansare,'YYYY-MM-DD') desc) WHERE ROWNUM<3 UNION SELECT * FROM (SELECT * from parfumuri where cantitate=100 and sex=2 and stoc > 0 order by to_date(data_lansare,'YYYY-MM-DD') desc) WHERE ROWNUM<3;
+  return my_cursor;
+END;

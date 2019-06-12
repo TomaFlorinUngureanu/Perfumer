@@ -1,0 +1,8 @@
+create or replace FUNCTION ourRecommendation
+RETURN  SYS_REFCURSOR AS
+my_cursor SYS_REFCURSOR;
+BEGIN
+  OPEN my_cursor FOR select * from parfumuri where id in (select * from (select * from (select id_parfum from comenzi c join parfumuri p on c.id_parfum=p.id where sex=1 group by id_parfum,sex order by sum(c.cantitate) desc) where rownum<5 union
+select * from (select id_parfum from comenzi c join parfumuri p on c.id_parfum=p.id where sex=2 group by id_parfum,sex order by sum(c.cantitate) desc) where rownum<5)) order by sex;
+  return my_cursor;
+END;

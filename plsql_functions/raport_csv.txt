@@ -1,0 +1,113 @@
+create or replace FUNCTION raport_csv(p_email varchar2,p_stoc int,p_nota varchar2, p_ocazie varchar2, p_sezon varchar2,p_data1 varchar2, p_data2 varchar2, p_limita int)
+return varchar2 as
+cod varchar2(32500);
+mesaj varchar2(100) :='Succes!';
+v_fisier UTL_FILE.FILE_TYPE;
+v_nume varchar2(500);
+v_nr int;
+v_suma int;
+v_cantitate int;
+BEGIN
+select id into v_nume from raport;
+update raport set id=id+1 where id is not null;
+v_nume:= v_nume||'.Raport-';
+if(p_stoc=1)
+THEN
+if(p_limita=0)
+THEN
+select count(*)+1 into v_nr from parfumuri;
+else
+v_nr := p_limita+1;
+END IF;
+v_nume:=v_nume||'Stoc.csv';
+v_fisier:=UTL_FILE.FOPEN('MYDIR',v_nume,'W');
+cod:='Id,Nume,Brand,Cantitate,Stoc';
+UTL_FILE.PUT_LINE(v_fisier,cod,true);
+FOR std_linie IN (select * from (select id,nume,brand,cantitate,stoc from parfumuri order by stoc asc) where rownum<v_nr) LOOP
+cod:= std_linie.id ||',"' || std_linie.nume || '","' || std_linie.brand || '",' || std_linie.cantitate || ',' || std_linie.stoc;
+UTL_FILE.PUT_LINE(v_fisier,cod,true);
+END LOOP;
+ELSIF (p_email is not null)
+THEN
+if(p_limita=0)
+THEN
+select count(*)+1 into v_nr from comenzi;
+else
+v_nr := p_limita+1;
+END IF;
+v_nume:=v_nume||'Comenzi-' || p_email|| '.csv';
+v_fisier:=UTL_FILE.FOPEN('MYDIR',v_nume,'W');
+cod:='Id,Id Parfum,Nume,Brand,Bucati,Cost,Data Comenzii';
+UTL_FILE.PUT_LINE(v_fisier,cod,true);
+FOR std_linie IN (select * from (select c.id as id, c.id_parfum as id_parfum, p.nume as nume, p.brand as brand, c.cantitate as cantitate, c.cost as cost, c.data_comanda as data_comanda from comenzi c join parfumuri p on c.id_parfum = p.id where email=p_email order by data_comanda desc) where rownum<v_nr) LOOP
+cod:= std_linie.id ||',' || std_linie.id_parfum ||',' || std_linie.nume || ',' || std_linie.brand || ',' || std_linie.cantitate || ',' || std_linie.cost || ',' || std_linie.data_comanda;
+UTL_FILE.PUT_LINE(v_fisier,cod,true);
+END LOOP;
+ELSIF (p_nota is not null)
+THEN
+if(p_limita=0)
+THEN
+select count(*)+1 into v_nr from comenzi;
+else
+v_nr := p_limita+1;
+END IF;
+v_nume:=v_nume||'Comenzi-' || p_nota|| '.csv';
+v_fisier:=UTL_FILE.FOPEN('MYDIR',v_nume,'W');
+cod:='Id,Id Parfum,Nume,Brand,Bucati,Cost,Utilizator,Data Comenzii';
+UTL_FILE.PUT_LINE(v_fisier,cod,true);
+FOR std_linie IN (select * from (select c.id as id, c.id_parfum as id_parfum, p.nume as nume, p.brand as brand, c.cantitate as cantitate, c.cost as cost,c.email as email, c.data_comanda as data_comanda from comenzi c join parfumuri p on c.id_parfum = p.id where p.note like '%' || p_nota || '%' order by data_comanda desc) where rownum<v_nr) LOOP
+cod:= std_linie.id ||',' || std_linie.id_parfum ||',' || std_linie.nume || ',' || std_linie.brand || ',' || std_linie.cantitate || ',' || std_linie.cost || ',' || std_linie.email || ',' || std_linie.data_comanda;
+UTL_FILE.PUT_LINE(v_fisier,cod,true);
+END LOOP;
+ELSIF (p_ocazie is not null)
+THEN
+if(p_limita=0)
+THEN
+select count(*)+1 into v_nr from comenzi;
+else
+v_nr := p_limita+1;
+END IF;
+v_nume:=v_nume||'Comenzi-' || p_ocazie|| '.csv';
+v_fisier:=UTL_FILE.FOPEN('MYDIR',v_nume,'W');
+cod:='Id,Id Parfum,Nume,Brand,Bucati,Cost,Utilizator,Data Comenzii';
+UTL_FILE.PUT_LINE(v_fisier,cod,true);
+FOR std_linie IN (select * from (select c.id as id, c.id_parfum as id_parfum, p.nume as nume, p.brand as brand, c.cantitate as cantitate, c.cost as cost,c.email as email, c.data_comanda as data_comanda from comenzi c join parfumuri p on c.id_parfum = p.id where p.ocazie=p_ocazie order by data_comanda desc) where rownum<v_nr) LOOP
+cod:= std_linie.id ||',' || std_linie.id_parfum ||',' || std_linie.nume || ',' || std_linie.brand || ',' || std_linie.cantitate || ',' || std_linie.cost || ',' || std_linie.email || ',' || std_linie.data_comanda;
+UTL_FILE.PUT_LINE(v_fisier,cod,true);
+END LOOP;
+ELSIF (p_sezon is not null)
+THEN
+if(p_limita=0)
+THEN
+select count(*)+1 into v_nr from comenzi;
+else
+v_nr := p_limita+1;
+END IF;
+v_nume:=v_nume||'Comenzi-' || p_sezon|| '.csv';
+v_fisier:=UTL_FILE.FOPEN('MYDIR',v_nume,'W');
+cod:='Id,Id Parfum,Nume,Brand,Bucati,Cost,Utilizator,Data Comenzii';
+UTL_FILE.PUT_LINE(v_fisier,cod,true);
+FOR std_linie IN (select * from (select c.id as id, c.id_parfum as id_parfum, p.nume as nume, p.brand as brand, c.cantitate as cantitate, c.cost as cost,c.email as email, c.data_comanda as data_comanda from comenzi c join parfumuri p on c.id_parfum = p.id where p.sezon=p_sezon order by data_comanda desc) where rownum<v_nr) LOOP
+cod:= std_linie.id ||',' || std_linie.id_parfum ||',' || std_linie.nume || ',' || std_linie.brand || ',' || std_linie.cantitate || ',' || std_linie.cost || ',' || std_linie.email || ',' || std_linie.data_comanda;
+UTL_FILE.PUT_LINE(v_fisier,cod,true);
+END LOOP;
+ELSIF (p_data1 is not null and p_data2 is not null)
+THEN
+if(p_limita=0)
+THEN
+select count(*)+1 into v_nr from comenzi;
+else
+v_nr := p_limita+1;
+END IF;
+v_nume:=v_nume||'Comenzi- ' || p_data1 ||'='|| p_data2 || '.csv';
+v_fisier:=UTL_FILE.FOPEN('MYDIR',v_nume,'W');
+cod:='Id,Id Parfum,Nume,Brand,Bucati,Cost,Utilizator,Data Comenzii';
+UTL_FILE.PUT_LINE(v_fisier,cod,true);
+FOR std_linie IN (select * from (select c.id as id, c.id_parfum as id_parfum, p.nume as nume, p.brand as brand, c.cantitate as cantitate, c.cost as cost,c.email as email, c.data_comanda as data_comanda from comenzi c join parfumuri p on c.id_parfum = p.id where to_date(data_comanda) between to_date(p_data1) and to_date(p_data2) order by data_comanda desc) where rownum<v_nr) LOOP
+cod:= std_linie.id ||',' || std_linie.id_parfum ||',' || std_linie.nume || ',' || std_linie.brand || ',' || std_linie.cantitate || ',' || std_linie.cost || ',' || std_linie.email || ',' || std_linie.data_comanda;
+UTL_FILE.PUT_LINE(v_fisier,cod,true);
+END LOOP;
+END IF;
+UTL_FILE.FCLOSE(v_fisier);
+return mesaj;
+END;

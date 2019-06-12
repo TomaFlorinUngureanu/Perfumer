@@ -1,0 +1,7 @@
+create or replace FUNCTION clearanceSales
+RETURN  SYS_REFCURSOR AS
+my_cursor SYS_REFCURSOR;
+BEGIN
+  OPEN my_cursor FOR select * from (select * from parfumuri where stoc<10 and stoc>=1 order by dbms_random.value) where rownum<11;
+  return my_cursor;
+END;

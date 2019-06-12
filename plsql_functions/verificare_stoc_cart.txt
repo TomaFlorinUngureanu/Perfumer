@@ -1,0 +1,14 @@
+create or replace FUNCTION verificare_stoc_cart(p_email varchar2,p_id int)
+return int as
+p_nr int :=0;
+p_test int;
+BEGIN
+select count(*) into p_test from shoppingCart where email=p_email and id_parfum=p_id;
+if(p_test>0)
+THEN
+select cantitate into p_nr from shoppingCart where email=p_email and id_parfum=p_id;
+return p_nr;
+ELSE
+return p_nr;
+END IF;
+END;

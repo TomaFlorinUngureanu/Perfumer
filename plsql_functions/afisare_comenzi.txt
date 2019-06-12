@@ -1,0 +1,9 @@
+create or replace FUNCTION afisare_comenzi(p_email varchar2)
+RETURN  SYS_REFCURSOR AS
+my_cursor SYS_REFCURSOR;
+BEGIN
+DBMS_OUTPUT.PUT_LINE(sysdate);
+  OPEN my_cursor FOR select p.*,s.cantitate,s.cost,s.data_comanda,s.stare from parfumuri p join comenzi s on p.id=s.id_parfum where s.email=p_email;
+  UPDATE comenzi SET stare='livrat' WHERE to_date(data_comanda)<=to_date(sysdate)-1 and stare='in curs de livrare';
+  return my_cursor;
+END;

@@ -1,0 +1,7 @@
+create or replace FUNCTION afisare_cart(p_email varchar2)
+RETURN  SYS_REFCURSOR AS
+my_cursor SYS_REFCURSOR;
+BEGIN
+  OPEN my_cursor FOR select p.*,s.cantitate,s.cost from parfumuri p join shoppingCart s on p.id=s.id_parfum where s.email=p_email;
+  return my_cursor;
+END;

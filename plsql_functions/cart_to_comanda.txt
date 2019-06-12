@@ -1,0 +1,17 @@
+create or replace FUNCTION cart_to_comanda(p_email varchar2)
+return varchar2 as
+mesaj varchar2(400) := 'Succes!';
+p_id int;
+p_id_parfum int;
+p_cantitate int;
+BEGIN
+select max(id)+1 into p_id from comenzi;
+FOR std_linie in (select * from shoppingCart where email=p_email) LOOP
+ INSERT INTO comenzi values(p_id,std_linie.id_parfum,p_email,std_linie.cantitate,std_linie.cost,sysdate,'in curs de livrare');
+ p_id_parfum :=std_linie.id_parfum;
+ p_cantitate :=std_linie.cantitate;
+ update parfumuri set stoc=stoc-p_cantitate where id=p_id_parfum;
+END LOOP;
+ DELETE FROM shoppingCart where email=p_email;
+return mesaj;
+END;

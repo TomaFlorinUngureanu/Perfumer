@@ -1,0 +1,23 @@
+create or replace FUNCTION resemblingFragrances(p_id varchar2)
+RETURN  SYS_REFCURSOR AS
+my_cursor SYS_REFCURSOR;
+p_nume varchar2(300);
+p_brand varchar2(300);
+p_note varchar2(300);
+p_numar int;
+p_nota1 varchar2(300);
+i  pls_integer := 0;
+BEGIN
+  select nume,brand,note into p_nume,p_brand,p_note from parfumuri where id=p_id group by nume,brand,note;
+  select count(brand)/4 into p_numar from parfumuri group by brand having brand=p_brand;
+  IF (p_numar >=4)
+  THEN
+   OPEN my_cursor FOR select * from (select * from (select * from parfumuri where p_brand=brand and cantitate=100 and stoc>0  minus select * from parfumuri where (nume,brand) in (select nume,brand from parfumuri where id=p_id) and cantitate=100 and stoc>0) order by dbms_random.value) where rownum<4;
+  return my_cursor; 
+  ELSE
+    i := instr(p_note, ',');
+    p_nota1 := substr(p_note, 1, i - 1);
+    OPEN my_cursor FOR select * from (select * from parfumuri where note like '%' ||p_nota1||'%' and cantitate=100 and stoc>1 order by dbms_random.value) where rownum<4;
+  return my_cursor; 
+  END IF;
+END;

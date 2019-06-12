@@ -1,0 +1,35 @@
+CREATE OR REPLACE FUNCTION lista_parfumuri_filtrare(p_ocazie varchar2, p_brand varchar2,p_note varchar2,p_sezon varchar2,p_pret int,p_sex int)
+RETURN  SYS_REFCURSOR AS
+my_cursor SYS_REFCURSOR;
+v_numar int:= 11;
+SQL_Text varchar2(32760) := 'SELECT * from (select * from parfumuri where ';
+BEGIN
+IF(p_brand is not null)
+THEN
+SQL_Text := SQL_Text || 'brand like ''%' || p_brand || '%''  and ';
+END IF;
+IF(p_note is not null)
+THEN
+SQL_Text := SQL_Text || 'note like ''%' || p_note || '%''  and ';
+END IF;
+IF(p_ocazie is not null)
+THEN
+SQL_Text := SQL_Text || 'ocazie=''' || p_ocazie || '''  and ';
+END IF;
+IF(p_sezon is not null)
+THEN
+SQL_Text := SQL_Text || 'sezon=''' || p_sezon || '''  and ';
+END IF;
+IF(p_pret is not null)
+THEN
+SQL_Text := SQL_Text || 'pret<=' || p_pret || ' and ';
+END IF;
+IF(p_sex is not null)
+THEN
+SQL_Text := SQL_Text || 'sex=' || p_sex || ' and ';
+END IF;
+SQL_Text := SQL_Text || 'cantitate=100) where rownum<' || v_numar;
+DBMS_OUTPUT.PUT_LINE(SQL_Text);
+open my_cursor for SQL_Text;
+return my_cursor;
+END;

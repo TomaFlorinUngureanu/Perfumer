@@ -1,0 +1,7 @@
+create or replace FUNCTION specificPerfume(p_id varchar2)
+RETURN  SYS_REFCURSOR AS
+my_cursor SYS_REFCURSOR;
+BEGIN
+  OPEN my_cursor FOR select * from parfumuri where (nume,brand) in (select nume,brand from parfumuri where id=p_id);
+  return my_cursor;
+END;

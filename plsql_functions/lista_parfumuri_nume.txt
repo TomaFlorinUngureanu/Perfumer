@@ -1,0 +1,11 @@
+CREATE OR REPLACE FUNCTION lista_parfumuri_nume(p_nume varchar2)
+RETURN  SYS_REFCURSOR AS
+my_cursor SYS_REFCURSOR;
+v_numar int:= 11;
+BEGIN
+IF (p_nume is NOT NULL)
+ THEN
+ OPEN my_cursor  FOR SELECT * from (select * from parfumuri where nume like '%' || p_nume || '%' and cantitate=100) where rownum<v_numar;
+   return my_cursor;
+END IF;
+END;

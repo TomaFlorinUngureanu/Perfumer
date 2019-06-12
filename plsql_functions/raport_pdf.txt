@@ -1,0 +1,396 @@
+create or replace FUNCTION raport_pdf(p_email varchar2,p_stoc int,p_nota varchar2, p_ocazie varchar2, p_sezon varchar2,p_data1 varchar2, p_data2 varchar2, p_limita int)
+return varchar2 as
+mesaj varchar2(100) :='Succes!';
+v_nume varchar2(500);
+v_nr int;
+v_hdr varchar2(400);
+v_dtl varchar2(400);
+p_test_nr int :=0;
+BEGIN
+select id into v_nume from raport;
+update raport set id=id+1 where id is not null;
+v_nume:= v_nume||'.Raport-';
+if(p_stoc=1)
+THEN
+if(p_limita=0)
+THEN
+select count(*)+1 into v_nr from parfumuri;
+else
+v_nr := p_limita+1;
+END IF;
+v_nume:=v_nume||'Stoc.pdf';
+/* First line to initialize the package*/
+ pdf_builder_pkg.init;
+ /* Set the font to bold for heading*/
+ pdf_builder_pkg.set_font ('helvetica', 'b');
+ /* Write a line using pdf_builder_pkg.write procedure*/
+ pdf_builder_pkg.write ('Raport - Stoc');
+ /* Set the font to normal */
+ pdf_builder_pkg.set_font ('helvetica');
+ pdf_builder_pkg.
+ write ('Printed Date: ' || SYSDATE, -1, p_alignment => 'right');
+ pdf_builder_pkg.
+ write (
+ '________________________________________________________________________________');
+ pdf_builder_pkg.write (' ' || CHR (10) || CHR (13));
+ /* Setting font courier for better alignment*/
+ pdf_builder_pkg.set_font ('courier');
+  v_hdr :=
+ RPAD ('Id', 7, ' ')
+ || RPAD ('Nume', 30, ' ')
+ || RPAD ('Brand', 19, ' ')
+ || RPAD ('Cantitate', 10, ' ')
+ || RPAD ('Stoc', 6, ' ');
+ pdf_builder_pkg.write (v_hdr);
+ pdf_builder_pkg.set_font ('helvetica');
+ pdf_builder_pkg.
+ write (
+ '________________________________________________________________________________');
+ pdf_builder_pkg.write (CHR (10) || CHR (13));
+ pdf_builder_pkg.set_font ('courier','N',10,'WINDOWS-1252');
+ FOR v_linie IN (select * from (select id,nume,brand,cantitate,stoc from parfumuri order by stoc asc) where rownum<v_nr) LOOP
+ v_dtl :=
+ RPAD (v_linie.id, 7, ' ')
+ || RPAD (v_linie.nume, 40, ' ')
+ || RPAD (v_linie.brand, 24, ' ')
+ || RPAD (v_linie.cantitate, 10, ' ')
+ || RPAD (v_linie.stoc, 6, ' ')
+ || CHR (10)
+ || CHR (13);
+ pdf_builder_pkg.write (v_dtl);
+ p_test_nr := p_test_nr+1;
+ IF(p_test_nr >70)
+ THEN
+ pdf_builder_pkg.new_page;
+ p_test_nr :=0;
+ END IF;
+ END LOOP;
+pdf_builder_pkg.set_font ('helvetica');
+ pdf_builder_pkg.
+ write (
+ '________________________________________________________________________________');
+ pdf_builder_pkg.set_font ('courier');
+ pdf_builder_pkg.save_pdf ('MYDIR', v_nume);
+ ELSIF (p_email is not null)
+THEN
+if(p_limita=0)
+THEN
+select count(*)+1 into v_nr from comenzi;
+else
+v_nr := p_limita+1;
+END IF;
+v_nume:=v_nume||'Comenzi-' || p_email|| '.pdf';
+ pdf_builder_pkg.init;
+ /* Set the font to bold for heading*/
+ pdf_builder_pkg.set_font ('helvetica', 'b');
+ /* Write a line using pdf_builder_pkg.write procedure*/
+ pdf_builder_pkg.write ('Raport - Comenzi' || ' ' || p_email);
+ /* Set the font to normal */
+ pdf_builder_pkg.set_font ('helvetica');
+ pdf_builder_pkg.
+ write ('Printed Date: ' || SYSDATE, -1, p_alignment => 'right');
+ pdf_builder_pkg.
+ write (
+ '________________________________________________________________________________');
+ pdf_builder_pkg.write (' ' || CHR (10) || CHR (13));
+ /* Setting font courier for better alignment*/
+ pdf_builder_pkg.set_font ('courier','N',10,'WINDOWS-1252');
+  v_hdr :=
+ RPAD ('Id', 4, ' ')
+ || RPAD ('Id_Parf' , 7 , ' ')
+ || RPAD ('Nume', 30, ' ')
+ || RPAD ('Brand', 19, ' ')
+ || RPAD ('Bucati', 8, ' ')
+ || RPAD ('Cost', 6, ' ')
+ || RPAD ('Data_Com' , 9, ' ');
+ pdf_builder_pkg.write (v_hdr);
+ pdf_builder_pkg.set_font ('helvetica');
+ pdf_builder_pkg.
+ write (
+ '__________________________________________________________________________________________');
+ pdf_builder_pkg.write (CHR (10) || CHR (13));
+ pdf_builder_pkg.set_font ('courier','N',10,'WINDOWS-1252');
+ FOR v_linie IN (select * from (select * from (select c.id as id, c.id_parfum as id_parfum, p.nume as nume, p.brand as brand, c.cantitate as cantitate, c.cost as cost, c.data_comanda as data_comanda from comenzi c join parfumuri p on c.id_parfum = p.id where email=p_email order by data_comanda desc) where rownum<v_nr)) LOOP
+ v_dtl :=
+ RPAD (v_linie.id, 4, ' ')
+ || RPAD (v_linie.id_parfum , 7 , ' ')
+ || RPAD (v_linie.nume, 30, ' ')
+ || RPAD (v_linie.brand, 19, ' ')
+ || RPAD (v_linie.cantitate, 8, ' ')
+ || RPAD (v_linie.cost, 6, ' ')
+ || RPAD (v_linie.data_comanda , 9, ' ')
+ || CHR (10)
+ || CHR (13);
+ pdf_builder_pkg.write (v_dtl);
+ p_test_nr := p_test_nr+1;
+ IF(p_test_nr >70)
+ THEN
+ pdf_builder_pkg.new_page;
+ p_test_nr :=0;
+ END IF;
+ END LOOP;
+pdf_builder_pkg.set_font ('helvetica');
+ pdf_builder_pkg.
+ write (
+ '__________________________________________________________________________________________');
+ pdf_builder_pkg.set_font ('courier');
+ pdf_builder_pkg.save_pdf ('MYDIR', v_nume);
+ ELSIF (p_nota is not null)
+THEN
+if(p_limita=0)
+THEN
+select count(*)+1 into v_nr from comenzi;
+else
+v_nr := p_limita+1;
+END IF;
+v_nume:=v_nume||'Comenzi-' || p_nota|| '.pdf';
+pdf_builder_pkg.init;
+ /* Set the font to bold for heading*/
+ pdf_builder_pkg.set_font ('helvetica', 'b');
+ /* Write a line using pdf_builder_pkg.write procedure*/
+ pdf_builder_pkg.write ('Raport - Comenzi - ' || p_nota);
+ /* Set the font to normal */
+ pdf_builder_pkg.set_font ('helvetica');
+ pdf_builder_pkg.
+ write ('Printed Date: ' || SYSDATE, -1, p_alignment => 'right');
+ pdf_builder_pkg.
+ write (
+ '________________________________________________________________________________');
+ pdf_builder_pkg.write (' ' || CHR (10) || CHR (13));
+ /* Setting font courier for better alignment*/
+ pdf_builder_pkg.set_font ('courier','N',10,'WINDOWS-1252');
+  v_hdr :=
+ RPAD ('Id', 4, ' ')
+ || RPAD ('Id_Parf' , 7 , ' ')
+ || RPAD ('Nume', 25, ' ')
+ || RPAD ('Email', 24, ' ')
+ || RPAD ('Bucati', 8, ' ')
+ || RPAD ('Cost', 6, ' ')
+ || RPAD ('Data_Com' , 9, ' ');
+ pdf_builder_pkg.write (v_hdr);
+ pdf_builder_pkg.set_font ('helvetica');
+ pdf_builder_pkg.
+ write (
+ '__________________________________________________________________________________________');
+ pdf_builder_pkg.write (CHR (10) || CHR (13));
+ pdf_builder_pkg.set_font ('courier','N',10,'WINDOWS-1252');
+ FOR v_linie IN (select * from (select c.id as id, c.id_parfum as id_parfum, p.nume as nume, p.brand as brand, c.cantitate as cantitate, c.cost as cost,c.email as email, c.data_comanda as data_comanda from comenzi c join parfumuri p on c.id_parfum = p.id where p.note like '%' || p_nota || '%' order by data_comanda desc) where rownum<v_nr) LOOP
+ v_dtl :=
+ RPAD (v_linie.id, 4, ' ')
+ || RPAD (v_linie.id_parfum , 7 , ' ')
+ || RPAD (v_linie.nume, 25, ' ')
+ || RPAD (v_linie.email, 24, ' ')
+ || RPAD (v_linie.cantitate, 8, ' ')
+ || RPAD (v_linie.cost, 6, ' ')
+ || RPAD (v_linie.data_comanda , 9, ' ')
+ || CHR (10)
+ || CHR (13);
+ pdf_builder_pkg.write (v_dtl);
+ p_test_nr := p_test_nr+1;
+ IF(p_test_nr >70)
+ THEN
+ pdf_builder_pkg.new_page;
+ p_test_nr :=0;
+ END IF;
+ END LOOP;
+pdf_builder_pkg.set_font ('helvetica');
+ pdf_builder_pkg.
+ write (
+ '__________________________________________________________________________________________');
+ pdf_builder_pkg.set_font ('courier');
+ pdf_builder_pkg.save_pdf ('MYDIR', v_nume);
+ ELSIF (p_ocazie is not null)
+THEN
+if(p_limita=0)
+THEN
+select count(*)+1 into v_nr from comenzi;
+else
+v_nr := p_limita+1;
+END IF;
+v_nume:=v_nume||'Comenzi-' || p_ocazie|| '.pdf';
+ pdf_builder_pkg.init;
+ /* Set the font to bold for heading*/
+ pdf_builder_pkg.set_font ('helvetica', 'b');
+ /* Write a line using pdf_builder_pkg.write procedure*/
+ pdf_builder_pkg.write ('Raport - Comenzi - ' || p_ocazie);
+ /* Set the font to normal */
+ pdf_builder_pkg.set_font ('helvetica');
+ pdf_builder_pkg.
+ write ('Printed Date: ' || SYSDATE, -1, p_alignment => 'right');
+ pdf_builder_pkg.
+ write (
+ '________________________________________________________________________________');
+ pdf_builder_pkg.write (' ' || CHR (10) || CHR (13));
+ /* Setting font courier for better alignment*/
+ pdf_builder_pkg.set_font ('courier','N',10,'WINDOWS-1252');
+  v_hdr :=
+ RPAD ('Id', 4, ' ')
+ || RPAD ('Id_Parf' , 7 , ' ')
+ || RPAD ('Nume', 25, ' ')
+ || RPAD ('Email', 24, ' ')
+ || RPAD ('Bucati', 8, ' ')
+ || RPAD ('Cost', 6, ' ')
+ || RPAD ('Data_Com' , 9, ' ');
+ pdf_builder_pkg.write (v_hdr);
+ pdf_builder_pkg.set_font ('helvetica');
+ pdf_builder_pkg.
+ write (
+ '__________________________________________________________________________________________');
+ pdf_builder_pkg.write (CHR (10) || CHR (13));
+ pdf_builder_pkg.set_font ('courier','N',10,'WINDOWS-1252');
+ FOR v_linie IN (select * from (select c.id as id, c.id_parfum as id_parfum, p.nume as nume, p.brand as brand, c.cantitate as cantitate, c.cost as cost,c.email as email, c.data_comanda as data_comanda from comenzi c join parfumuri p on c.id_parfum = p.id where p.ocazie=p_ocazie order by data_comanda desc) where rownum<v_nr) LOOP
+ v_dtl :=
+ RPAD (v_linie.id, 4, ' ')
+ || RPAD (v_linie.id_parfum , 7 , ' ')
+ || RPAD (v_linie.nume, 25, ' ')
+ || RPAD (v_linie.email, 24, ' ')
+ || RPAD (v_linie.cantitate, 8, ' ')
+ || RPAD (v_linie.cost, 6, ' ')
+ || RPAD (v_linie.data_comanda , 9, ' ')
+ || CHR (10)
+ || CHR (13);
+ pdf_builder_pkg.write (v_dtl);
+ p_test_nr := p_test_nr+1;
+ IF(p_test_nr >70)
+ THEN
+ pdf_builder_pkg.new_page;
+ p_test_nr :=0;
+ END IF;
+ END LOOP;
+pdf_builder_pkg.set_font ('helvetica');
+ pdf_builder_pkg.
+ write (
+ '__________________________________________________________________________________________');
+ pdf_builder_pkg.set_font ('courier');
+ pdf_builder_pkg.save_pdf ('MYDIR', v_nume);
+ ELSIF (p_sezon is not null)
+THEN
+if(p_limita=0)
+THEN
+select count(*)+1 into v_nr from comenzi;
+else
+v_nr := p_limita+1;
+END IF;
+v_nume:=v_nume||'Comenzi-' || p_sezon|| '.pdf';
+ pdf_builder_pkg.init;
+ /* Set the font to bold for heading*/
+ pdf_builder_pkg.set_font ('helvetica', 'b');
+ /* Write a line using pdf_builder_pkg.write procedure*/
+ pdf_builder_pkg.write ('Raport - Comenzi - ' || p_sezon);
+ /* Set the font to normal */
+ pdf_builder_pkg.set_font ('helvetica');
+ pdf_builder_pkg.
+ write ('Printed Date: ' || SYSDATE, -1, p_alignment => 'right');
+ pdf_builder_pkg.
+ write (
+ '________________________________________________________________________________');
+ pdf_builder_pkg.write (' ' || CHR (10) || CHR (13));
+ /* Setting font courier for better alignment*/
+ pdf_builder_pkg.set_font ('courier','N',10,'WINDOWS-1252');
+  v_hdr :=
+ RPAD ('Id', 4, ' ')
+ || RPAD ('Id_Parf' , 7 , ' ')
+ || RPAD ('Nume', 25, ' ')
+ || RPAD ('Email', 24, ' ')
+ || RPAD ('Bucati', 8, ' ')
+ || RPAD ('Cost', 6, ' ')
+ || RPAD ('Data_Com' , 9, ' ');
+ pdf_builder_pkg.write (v_hdr);
+ pdf_builder_pkg.set_font ('helvetica');
+ pdf_builder_pkg.
+ write (
+ '__________________________________________________________________________________________');
+ pdf_builder_pkg.write (CHR (10) || CHR (13));
+ pdf_builder_pkg.set_font ('courier','N',10,'WINDOWS-1252');
+ FOR v_linie IN (select * from (select c.id as id, c.id_parfum as id_parfum, p.nume as nume, p.brand as brand, c.cantitate as cantitate, c.cost as cost,c.email as email, c.data_comanda as data_comanda from comenzi c join parfumuri p on c.id_parfum = p.id where p.sezon=p_sezon order by data_comanda desc) where rownum<v_nr) LOOP
+ v_dtl :=
+ RPAD (v_linie.id, 4, ' ')
+ || RPAD (v_linie.id_parfum , 7 , ' ')
+ || RPAD (v_linie.nume, 25, ' ')
+ || RPAD (v_linie.email, 24, ' ')
+ || RPAD (v_linie.cantitate, 8, ' ')
+ || RPAD (v_linie.cost, 6, ' ')
+ || RPAD (v_linie.data_comanda , 9, ' ')
+ || CHR (10)
+ || CHR (13);
+ pdf_builder_pkg.write (v_dtl);
+ p_test_nr := p_test_nr+1;
+ IF(p_test_nr >70)
+ THEN
+ pdf_builder_pkg.new_page;
+ p_test_nr :=0;
+ END IF;
+ END LOOP;
+pdf_builder_pkg.set_font ('helvetica');
+ pdf_builder_pkg.
+ write (
+ '__________________________________________________________________________________________');
+ pdf_builder_pkg.set_font ('courier');
+ pdf_builder_pkg.save_pdf ('MYDIR', v_nume);
+ ELSIF (p_data1 is not null and p_data2 is not null)
+THEN
+if(p_limita=0)
+THEN
+select count(*)+1 into v_nr from comenzi;
+else
+v_nr := p_limita+1;
+END IF;
+v_nume:=v_nume||'Comenzi- ' || p_data1 ||'='|| p_data2 || '.pdf';
+ pdf_builder_pkg.init;
+ /* Set the font to bold for heading*/
+ pdf_builder_pkg.set_font ('helvetica', 'b');
+ /* Write a line using pdf_builder_pkg.write procedure*/
+ pdf_builder_pkg.write ('Raport - Comenzi - '||p_data1||'/'||p_data2);
+ /* Set the font to normal */
+ pdf_builder_pkg.set_font ('helvetica');
+ pdf_builder_pkg.
+ write ('Printed Date: ' || SYSDATE, -1, p_alignment => 'right');
+ pdf_builder_pkg.
+ write (
+ '________________________________________________________________________________');
+ pdf_builder_pkg.write (' ' || CHR (10) || CHR (13));
+ /* Setting font courier for better alignment*/
+ pdf_builder_pkg.set_font ('courier','N',10,'WINDOWS-1252');
+  v_hdr :=
+ RPAD ('Id', 4, ' ')
+ || RPAD ('Id_Parf' , 7 , ' ')
+ || RPAD ('Nume', 25, ' ')
+ || RPAD ('Email', 24, ' ')
+ || RPAD ('Bucati', 8, ' ')
+ || RPAD ('Cost', 6, ' ')
+ || RPAD ('Data_Com' , 9, ' ');
+ pdf_builder_pkg.write (v_hdr);
+ pdf_builder_pkg.set_font ('helvetica');
+ pdf_builder_pkg.
+ write (
+ '__________________________________________________________________________________________');
+ pdf_builder_pkg.write (CHR (10) || CHR (13));
+ pdf_builder_pkg.set_font ('courier','N',10,'WINDOWS-1252');
+ FOR v_linie IN (select * from (select c.id as id, c.id_parfum as id_parfum, p.nume as nume, p.brand as brand, c.cantitate as cantitate, c.cost as cost,c.email as email, c.data_comanda as data_comanda from comenzi c join parfumuri p on c.id_parfum = p.id where to_date(data_comanda) between to_date(p_data1) and to_date(p_data2) order by data_comanda desc) where rownum<v_nr) LOOP
+ v_dtl :=
+ RPAD (v_linie.id, 4, ' ')
+ || RPAD (v_linie.id_parfum , 7 , ' ')
+ || RPAD (v_linie.nume, 25, ' ')
+ || RPAD (v_linie.email, 24, ' ')
+ || RPAD (v_linie.cantitate, 8, ' ')
+ || RPAD (v_linie.cost, 6, ' ')
+ || RPAD (v_linie.data_comanda , 9, ' ')
+ || CHR (10)
+ || CHR (13);
+ pdf_builder_pkg.write (v_dtl);
+ p_test_nr := p_test_nr+1;
+ IF(p_test_nr >70)
+ THEN
+ pdf_builder_pkg.new_page;
+ p_test_nr :=0;
+ END IF;
+ END LOOP;
+pdf_builder_pkg.set_font ('helvetica');
+ pdf_builder_pkg.
+ write (
+ '__________________________________________________________________________________________');
+ pdf_builder_pkg.set_font ('courier');
+ pdf_builder_pkg.save_pdf ('MYDIR', v_nume);
+ END IF;
+ return mesaj;
+END;

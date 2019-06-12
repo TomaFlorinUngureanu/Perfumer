@@ -1,0 +1,14 @@
+CREATE OR REPLACE FUNCTION setare_client (p_email varchar2, p_adresa varchar2, p_preferinta_ocazie varchar2, p_preferinta_nota varchar2, p_preferinta_sezon varchar2)
+RETURN VARCHAR2 as
+p_test int :=0;
+mesaj varchar2(100) := 'Succes!';
+BEGIN
+select count(*) into p_test from clienti where email=p_email;
+if(p_test=0)
+THEN
+insert into clienti values (p_email,p_adresa,p_preferinta_ocazie,p_preferinta_nota,p_preferinta_sezon);
+ELSE
+update clienti set adresa=p_adresa, preferinta_ocazie=p_preferinta_ocazie, preferinta_nota = p_preferinta_nota, preferinta_sezon=p_preferinta_sezon where email=p_email;
+END IF;
+return mesaj;
+END;

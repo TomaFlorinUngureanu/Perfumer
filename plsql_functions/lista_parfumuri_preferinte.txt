@@ -1,0 +1,41 @@
+CREATE OR REPLACE FUNCTION lista_parfumuri_preferinte(p_email varchar2)
+RETURN  SYS_REFCURSOR AS
+my_cursor SYS_REFCURSOR;
+v_numar int:= 11;
+v_test int :=0;
+ps varchar2(100);
+pn varchar2(100);
+po varchar2(100);
+SQL_Text varchar2(32760) := 'SELECT * from (select * from parfumuri where ';
+BEGIN
+select count(*) into v_test from clienti where email=p_email;
+IF(v_test=0)
+THEN
+OPEN my_cursor FOR select * from (select * from parfumuri order by dbms_random.value) where rownum<v_numar;
+return my_cursor;
+ELSE
+select preferinta_ocazie,preferinta_nota,preferinta_sezon into po,pn,ps from clienti where email=p_email;
+if (po is null and pn is null and ps is null)
+THEN
+OPEN my_cursor FOR select * from (select * from parfumuri order by dbms_random.value) where rownum<v_numar;
+return my_cursor;
+ELSE
+IF(pN is not null)
+THEN
+SQL_Text := SQL_Text || 'note like ''%' || pn || '%''  and ';
+END IF;
+IF(po is not null)
+THEN
+SQL_Text := SQL_Text || 'ocazie=''' || po || '''  and ';
+END IF;
+IF(ps is not null)
+THEN
+SQL_Text := SQL_Text || 'sezon=''' || ps|| '''  and ';
+END IF;
+SQL_Text := SQL_Text || 'cantitate=100) where rownum<' || v_numar;
+DBMS_OUTPUT.PUT_LINE(SQL_Text);
+open my_cursor for SQL_Text;
+return my_cursor;
+END IF;
+END IF;
+END;

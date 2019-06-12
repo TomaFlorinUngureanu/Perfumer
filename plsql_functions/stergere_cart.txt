@@ -1,0 +1,7 @@
+create or replace FUNCTION stergere_cart(p_id int,p_idparfum int ,p_email varchar2,p_cantitate int ,p_cost int)
+return varchar2 as
+mesaj varchar2(400) := 'Succes!';
+BEGIN
+delete from shoppingCart where id=p_id and id_parfum=p_idparfum and email=p_email and cantitate=p_cantitate and cost=p_cost;
+return mesaj;
+END;

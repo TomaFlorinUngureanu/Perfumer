@@ -1,0 +1,27 @@
+create or replace FUNCTION adaugare_cart(p_poza varchar2,p_nume varchar2, p_brand varchar2, p_cantitate int, p_sex int, p_email varchar2, p_bucati int, p_cost int)
+RETURN  varchar2 AS
+mesaj varchar2(400) := 'Succes!';
+p_id int;
+p_id_nou int;
+p_test int;
+p_test2 int;
+BEGIN
+  select id into p_id from parfumuri where poza=p_poza and nume=p_nume and brand=p_brand and cantitate=p_cantitate and sex=p_sex;
+  mesaj := mesaj ||p_id;
+  select count(*) into p_test from shoppingCart where email=p_email;
+  if(p_test>0)
+  THEN
+  select distinct(id) into p_id_nou from shoppingCart where email=p_email;
+  ELSE
+  select max(id)+1 into p_id_nou from shoppingCart;
+  END IF;
+  select count(*) into p_test2 from shoppingCart where p_id=id_parfum and email=p_email;
+  IF(p_test2>0)
+  THEN
+  update shoppingCart set cantitate=cantitate+p_bucati where id_parfum=p_id and email=p_email;
+  update shoppingCart set cost=cost+p_cost where id_parfum=p_id and email=p_email;
+  ELSE
+  insert into shoppingCart values(p_id_nou,p_id,p_email,p_bucati,p_cost);
+  END IF;
+  return mesaj;
+END;
