@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+//error_reporting(0);
 ob_start();
 require_once('../../config/Settings.php');
 require_once('../../backend/utils/userRelated/GoogleLoginApi.php');
@@ -20,7 +20,7 @@ GoogleLoginApi::startSession();
     </style>
 </head>
 
-<body>
+<body onload="getUserCommnds()">
 <div class="header">
     <div style="display: flex; justify-content: center;">
         <img src="../images/logo.png" alt="Le petit parfum" style="width:180px;height:180px">
@@ -63,6 +63,12 @@ GoogleLoginApi::startSession();
                     </div>
                     <br><br>
                 </div>
+                <div class="card">
+                    <h2>My commands</h2>
+                    <div class="myCommandsWrapper" id="myCommandsWrapper">
+
+                    </div>
+                </div>
             </div>
             <div class="rightcolumn">
                 <h3>Occasion</h3>
@@ -102,9 +108,6 @@ GoogleLoginApi::startSession();
                 <script src="../../scripts/updateUserInfo.js"></script>
                 <script src="../../scripts/ajaxRelated.js"></script>
             </div>
-        </div>
-        <div class="card">
-            <h2>My commands</h2>
         </div>
     </div>
 

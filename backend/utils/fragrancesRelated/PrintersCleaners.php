@@ -68,9 +68,7 @@ function printShoppingCart($fragranceArray)
         if (sizeof($fragranceArray) != 0)
         {
             array_push($perfumeWrapperArray,
-                "<button type=\"button\" class=\"updateQuantityButton\" onclick=\"updateQuantity()\">
-                    Update Quantities</button><br><br><br> 
-                    <input type=\"button\" class=\"button\" value=\"Proceed to checkout\">");
+                "");
         } else
         {
             array_push($perfumeWrapperArray, "<h3>Your shopping cart is empty!</h3>");

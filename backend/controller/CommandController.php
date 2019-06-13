@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require_once('PerfumeController.php');
 
 class CommandController
@@ -21,7 +22,9 @@ class CommandController
         {
             oci_bind_by_name($stmt,':email',$userEmail);
             oci_bind_by_name($stmt,':message',$result, 400, SQLT_CHR);
+
             oci_execute($stmt);
+            oci_commit($this->conn);
         }
 
         if($result != 'Succes!')

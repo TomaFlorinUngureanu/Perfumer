@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+//error_reporting(0);
 require_once('../../config/Settings.php');
 require_once('../../backend/utils/userRelated/GoogleLoginApi.php');
 require_once('../../backend/database/DbConnection.php');
@@ -40,7 +40,9 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
     <a href="PerfumerIndex.php">Home</a>
     <a href="PerfumerPromo.php">Promo</a>
     <a href="PerfumerFragrances.php">Fragrances</a>
-    <a href="PerfumerShoppingCart.php" style="float:right">Shopping Cart</a>
+    <?php if (!($_SESSION["userName"] == 'Admin')) : ?>
+        <a href="PerfumerShoppingCart.php" style="float:right">Shopping Cart</a>
+    <?php endif; ?>
 
     <?php if (!isset($_SESSION["userName"])) : ?>
         <a href="https://accounts.google.com/o/oauth2/auth?scope=
@@ -66,6 +68,12 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
                 <input type="submit" onclick="loadXMLDoc()" value="Filter!">
                 <script src="../../scripts/ajaxRelated.js?v=2"></script>
             </div>
+            <br>
+            <div class="search-container">
+                <input type="text" placeholder="Search.." name="search" id="byNameSearch" class="byNameSearch">
+                <button type="submit" onclick="getFragrancesByName()">Submit</button>
+            </div>
+            <br><br>
             <h3>Price range:</h3>
             <div class="slidecontainer">
                 <input type="range" min="<?= $minVal ?>" max="<?= $maxVal ?>"
@@ -100,7 +108,8 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
             <div class="fragranceOccasions">
                 <?php foreach (PerfumeModel::occasions as $occasion): ?>
                     <label class="radioContainer"><?= $occasion ?>
-                        <input type="radio" checked="checked" value="<?= $occasion ?>" id="occasions" name="occasions[]">
+                        <input type="radio" checked="checked" value="<?= $occasion ?>" id="occasions"
+                               name="occasions[]">
                         <span class="radioCheckmark"></span>
                     </label>
                 <?php endforeach; ?>
@@ -129,6 +138,10 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
                 <h3 id="ourRecommendation">Our Recommendation</h3>
                 <div class="ourRecommendationWrapper" id="ourRecommendationWrapper">
                     <div class="ourRecommendationGrid" id="ourRecommendationGrid"></div>
+                </div>
+                <div class="searchByNameWrapper" id="searchByNameWrapper">
+                    <div class="searchByNameGrid" id="searchByNameGrid">
+                    </div>
                 </div>
             </div>
         </div>

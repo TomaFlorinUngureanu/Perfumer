@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+//error_reporting(0);
 ob_start();
 require_once('../../config/Settings.php');
 require_once('../../backend/utils/userRelated/GoogleLoginApi.php');
@@ -36,7 +36,9 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
     <a href="PerfumerIndex.php">Home</a>
     <a href="PerfumerPromo.php">Promo</a>
     <a href="PerfumerFragrances.php">Fragrances</a>
-    <a href="PerfumerShoppingCart.php" style="float:right">Shopping Cart</a>
+    <?php if (!($_SESSION["userName"] == 'Admin')) : ?>
+        <a href="PerfumerShoppingCart.php" style="float:right">Shopping Cart</a>
+    <?php endif; ?>
 
     <?php if (!isset($_SESSION["userName"])) : ?>
         <a href="https://accounts.google.com/o/oauth2/auth?scope=

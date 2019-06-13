@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+//error_reporting(0);
 ob_start();
 require_once('../../config/Settings.php');
 require_once('../../backend/utils/userRelated/GoogleLoginApi.php');
@@ -32,7 +32,7 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
     </style>
 </head>
 
-<body onload="getNewestReleases()">
+<body onload="onLoadShoppingCart()">
 
 <div class="header">
     <div style="display: flex; justify-content: center;">
@@ -69,6 +69,13 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
             <div class="ShoppingCartWrapper">
                 <?= printShoppingCart($commandController->getShoppingCart($userEmail)) ?>
             </div>
+            <button type="button" class="updateQuantityButton" onclick="updateQuantity()">
+                Update Quantities</button><br><br><br>
+            <div class="totalCost">
+                <h2>TOTAL COST</h2>
+                <h2 id="totalCostH2" class="totalCostH2"></h2>
+            </div>
+            <input type="button" class="button" onclick="finishCommand()" value="Proceed to checkout">
         </div>
     </div>
     <div class="leftcolumn">

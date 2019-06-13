@@ -38,6 +38,43 @@ class PerfumeController
         return $price;
     }
 
+    public function getFragrancesByName($fragranceName)
+    {
+        $filteredCursor = oci_new_cursor($this->conn);
+        if (!($stmt = oci_parse($this->conn,
+            'begin :result := lista_parfumuri_nume(:p_fragranceName); end;')))
+        {
+            http_response_code(500);
+            echo "Filtering failed";
+        } else
+        {
+            oci_bind_by_name($stmt, ':result', $filteredCursor, -1, OCI_B_CURSOR);
+            oci_bind_by_name($stmt, ':p_fragranceName', $fragranceName);
+            oci_execute($stmt);
+            oci_execute($filteredCursor);
+        }
+
+        $fragranceList = array();
+        while (($row = oci_fetch_array($filteredCursor, OCI_ASSOC + OCI_RETURN_NULLS)) != false)
+        {
+            array_push($fragranceList, $row);
+        }
+
+        for ($i = 0; $i < sizeof($fragranceList); $i++)
+        {
+            foreach ($fragranceList[$i] as $key => $value)
+            {
+                $text = str_replace("\u0026amp;", "&", $value);
+                $text = str_replace("\u0027", "'", $value);
+                $fragranceList[$i][$key] = $text;
+            }
+        }
+
+        oci_free_statement($stmt);
+        oci_free_cursor($filteredCursor);
+        return $fragranceList;
+    }
+
     public function getSingleSpecificFragrance($fragranceId)
     {
         $sqlQuery = 'select * from parfumuri where id=' . $fragranceId;
