@@ -310,7 +310,9 @@ function addToCart() {
 
     xmlhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            return true;
+            if (this.responseText === "You must login first!") {
+                alert(this.responseText);
+            }
         }
     };
 
@@ -610,7 +612,6 @@ function getResemblingFragrances() {
     let fragranceTextElement = document.getElementsByClassName('specificPerfumeText');
     let fragranceIdElement = fragranceTextElement[0].getElementsByClassName('fragranceId')[0];
     let fragranceId = fragranceIdElement.innerHTML;
-    console.log(fragranceId);
 
     let fragranceIdArray = [fragranceId];
     let fragranceIdJson = JSON.stringify(fragranceIdArray);
@@ -627,7 +628,6 @@ function getResemblingFragrances() {
 
     xmlhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            console.log(this.responseText);
             if (this.responseText !== '') {
                 let theParent = document.getElementById('resemblingFragranceGrid');
                 const response = JSON.parse(this.responseText);
@@ -692,12 +692,10 @@ function getFragrancesByName() {
         return false;
     }
 
-    console.log(name);
     let nameJson = JSON.stringify([name]);
 
     xmlhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            console.log(this.responseText);
             if (this.responseText !== '') {
                 let theParent = document.getElementById('fragranceNotToDelete');
                 let wrapperReborn = document.createElement("div");
@@ -827,10 +825,8 @@ function getUserCommnds() {
     xmlhttp.send("&userEmail=" + userEmailJson);
 }
 
-function finishCommand()
-{
-    if(!confirm("Are you sure you want to finish the command?"))
-    {
+function finishCommand() {
+    if (!confirm("Are you sure you want to finish the command?")) {
         return false;
     }
 
@@ -861,32 +857,31 @@ function finishCommand()
     xmlhttp.send();
 }
 
-function setTotalCost()
-{
+function setTotalCost() {
     let costElement = document.getElementById('totalCostH2');
+    if (costElement === null) {
+        return false;
+    }
     let textWrappers = document.getElementsByClassName('shoppingCartTextWrapper');
     let totalCost = 0;
 
-    for(let textWrapper = 0; textWrapper < Object.keys(textWrappers).length; textWrapper++)
-    {
+    for (let textWrapper = 0; textWrapper < Object.keys(textWrappers).length; textWrapper++) {
         let costElements = textWrappers[textWrapper].getElementsByClassName('shoppingCartCost');
-        if(costElements === null)
-        {
+        if (costElements === null) {
             alert("Something went wrong. Please refresh");
             return false;
         }
 
-        if(costElements[0].innerText === '')
-        {
+        if (costElements[0].innerText === '') {
             alert("Couldn't retrieve the price. Please refresh");
             return false;
         }
 
-        let cost = parseInt(costElements[0].innerText.replace(" RON",""));
-        totalCost+=cost;
+        let cost = parseInt(costElements[0].innerText.replace(" RON", ""));
+        totalCost += cost;
     }
 
-    costElement.innerText=totalCost.toString();
+    costElement.innerText = totalCost.toString();
 }
 
 function generateCommandHTML(response, command, theParent) {
@@ -960,14 +955,13 @@ function generateCommandHTML(response, command, theParent) {
 
     let dellimiter = document.createElement("br");
     let delimiter1 = document.createElement("p");
-    delimiter1.innerText="----------------------------------------";
+    delimiter1.innerText = "----------------------------------------";
     oDiv.appendChild(delimiter1);
     oDiv.appendChild(dellimiter);
     theParent.appendChild(oDiv);
 }
 
-function onLoadShoppingCart()
-{
+function onLoadShoppingCart() {
     setTotalCost();
     getNewestReleases();
 }

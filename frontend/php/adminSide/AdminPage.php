@@ -71,7 +71,7 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
                 </div>
                 <br><br>
                 <label class="container">By Stock
-                    <input type="checkbox" value="By Stock" id="byStock" name="byStock">
+                    <input type="checkbox" value="By Stock" id="byStock" name="byStock[]">
                     <span class="checkmark"></span>
                 </label>
                 <br><br>
@@ -116,24 +116,30 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
                 <?php endforeach; ?>
             </div>
             <br><br>
-            <form action="/action_page.php">
-                <label>
-                    From: <input type="date" name="fromDate" id="fromDate" class="fromDate">
-                    To: <input type="date" name="toDate" id="toDate" class="toDate">
-                    <input type="submit">
-                </label>
-            </form>
+            <label>
+                From: <input type="date" name="fromDate" id="fromDate" class="fromDate">
+                To: <input type="date" name="toDate" id="toDate" class="toDate">
+            </label>
             <br><br>
             <div class="reportsButtons">
-                <button class="pdfReport" id="pdfReport">PDF Report</button>
-                <button class="pdfReport" id="pdfReport">HTML Report</button>
-                <button class="pdfReport" id="pdfReport">CSV Report</button>
+                <button class="pdfReport" id="pdfReport" onclick="createReport('pdf')">PDF Report</button>
+                <button class="htmlReport" id="htmlReport" onclick="createReport('html')">HTML Report</button>
+                <button class="csvReport" id="csvReport" onclick="createReport('csv')">CSV Report</button>
             </div>
+            <script src="../../../scripts/limitCheckBoxAdmin.js"></script>
+            <script src="../../../scripts/reportRelated.js"></script>
         </div>
     </div>
 <?php else : ?>
-<?= GoogleLoginApi::destroySession() ?>
+<? GoogleLoginApi::destroySession() ?>
 <?php endif; ?>
+<p>
+    <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        <img style="border:0;width:88px;height:31px"
+             src="http://jigsaw.w3.org/css-validator/images/vcss"
+             alt="Valid CSS!" />
+    </a>
+</p>
 </body>
 
 </html>

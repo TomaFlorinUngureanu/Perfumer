@@ -8,14 +8,13 @@ require_once('../../model/PerfumeModel.php');
 require_once('../../controller/CommandController.php');
 GoogleLoginApi::startSession();
 
-if(!isset($_SESSION["userEmail"]) || sizeof($_SESSION["userEmail"]) == 0)
+if (!isset($_SESSION["userEmail"]) || sizeof($_SESSION["userEmail"]) == 0)
 {
     echo "You must login first!";
-}
-else
+} else
 {
-    if(isset($_POST["fragranceCartId"]) && isset($_POST["fragranceCartOption"]) &&
-       isset($_POST["amountCart"]) && isset($_POST["costCart"]))
+    if (isset($_POST["fragranceCartId"]) && isset($_POST["fragranceCartOption"]) &&
+        isset($_POST["amountCart"]) && isset($_POST["costCart"]))
     {
         $fragranceId = json_decode($_POST["fragranceCartId"])[0];
         $fragranceOption = json_decode($_POST["fragranceCartOption"])[0];

@@ -73,7 +73,7 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
     <div class="leftcolumn">
         <div class="card">
             <h2>Newest releases</h2>
-            <div class="newestReleasesWrapper" id="newestReleasesGrid">
+            <div class="newestReleasesWrapper" id="newestReleasesWrapper">
                 <div class="newestReleasesGrid" id="newestReleasesGrid"></div>
             </div>
         </div>
@@ -83,6 +83,13 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
 
 <div class="footer">
     <h2>Contact and authors</h2>
+    <p>
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+            <img style="border:0;width:88px;height:31px"
+                 src="http://jigsaw.w3.org/css-validator/images/vcss"
+                 alt="Valid CSS!" />
+        </a>
+    </p>
 </div>
 
 </body>

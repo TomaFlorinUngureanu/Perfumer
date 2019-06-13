@@ -35,8 +35,7 @@
     width: 50%;
 }
 
-.inputEmailAddress
-{
+.inputEmailAddress {
     width: 400px;
     font-size: 14px;
     height: 30px;
@@ -171,8 +170,7 @@
 }
 
 
-.card button
-{
+.card button {
     background-color: red;
     border: none;
     color: white;
@@ -211,9 +209,34 @@ body {
 .header h1 {
     font-family: "Tangerine", serif;
     font-size: 60px;
-    padding-top: -10px;
 }
 
+@media screen and (max-width: 1100px) {
+    .header {
+        font-size: 20px;
+        float: none;
+        display: block;
+        text-align: center;
+        width: 100%;
+        margin: 0;
+        padding: 30px;
+    }
+
+    .header h1 {
+        float: none;
+        display: block;
+        text-align: center;
+        width: 100%;
+        margin: 0;
+        padding: 10px;
+        font-size: 60px;
+    }
+
+    .leftcolumn, .rightcolumn {
+        width: 100%;
+        padding: 0;
+    }
+}
 
 @media screen and (max-width: 800px) {
     .header {
@@ -244,8 +267,7 @@ body {
 
 @media screen and (max-width: 600px) {
 
-    .resetEmail
-    {
+    .resetEmail {
         padding-bottom: 5em;
     }
 
@@ -281,8 +303,7 @@ body {
 }
 
 @media screen and (max-width: 400px) {
-    .resetEmail
-    {
+    .resetEmail {
         padding-bottom: 5em;
     }
 

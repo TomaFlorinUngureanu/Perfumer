@@ -19,7 +19,7 @@ function printShoppingCart($fragranceArray)
     $perfumeController = new PerfumeController();
     $perfumeWrapperArray = array();
     $id = 0;
-    if($fragranceArray  != false)
+    if ($fragranceArray != false)
     {
         foreach ($fragranceArray as $row)
         {
@@ -65,11 +65,7 @@ function printShoppingCart($fragranceArray)
             $id++;
         }
 
-        if (sizeof($fragranceArray) != 0)
-        {
-            array_push($perfumeWrapperArray,
-                "");
-        } else
+        if (sizeof($fragranceArray) === 0)
         {
             array_push($perfumeWrapperArray, "<h3>Your shopping cart is empty!</h3>");
         }

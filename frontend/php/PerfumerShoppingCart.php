@@ -3,15 +3,15 @@
 ob_start();
 require_once('../../config/Settings.php');
 require_once('../../backend/utils/userRelated/GoogleLoginApi.php');
-require_once ('../../backend/database/DbConnection.php');
+require_once('../../backend/database/DbConnection.php');
 require_once('../../backend/controller/CommandController.php');
-require_once ('../../backend/model/PerfumeModel.php');
+require_once('../../backend/model/PerfumeModel.php');
 require_once('../../backend/utils/fragrancesRelated/PrintersCleaners.php');
 
 GoogleLoginApi::startSession();
 $userEmail = null;
 $commandController = new CommandController();
-if(isset($_SESSION["userEmail"]))
+if (isset($_SESSION["userEmail"]))
 {
     $userEmail = $_SESSION["userEmail"];
 }
@@ -66,22 +66,28 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
     <div class="rightcolumn">
         <div class="card">
             <h3>Shopping Cart</h3>
-            <div class="ShoppingCartWrapper">
-                <?= printShoppingCart($commandController->getShoppingCart($userEmail)) ?>
-            </div>
-            <button type="button" class="updateQuantityButton" onclick="updateQuantity()">
-                Update Quantities</button><br><br><br>
-            <div class="totalCost">
-                <h2>TOTAL COST</h2>
-                <h2 id="totalCostH2" class="totalCostH2"></h2>
-            </div>
-            <input type="button" class="button" onclick="finishCommand()" value="Proceed to checkout">
+            <?php if (isset($_SESSION["userName"])) : ?>
+                <div class="ShoppingCartWrapper">
+                    <?= printShoppingCart($commandController->getShoppingCart($userEmail)) ?>
+                </div>
+                <button type="button" class="updateQuantityButton" onclick="updateQuantity()">
+                    Update Quantities
+                </button>
+                <br><br><br>
+                <div class="totalCost">
+                    <h2>TOTAL COST</h2>
+                    <h2 id="totalCostH2" class="totalCostH2"></h2>
+                </div>
+                <input type="button" class="button" onclick="finishCommand()" value="Proceed to checkout">
+            <?php else: ?>
+                <h2>You should login first!</h2>
+            <?php endif; ?>
         </div>
     </div>
     <div class="leftcolumn">
         <div class="card">
             <h2>Newest releases</h2>
-            <div class="newestReleasesWrapper" id="newestReleasesGrid">
+            <div class="newestReleasesWrapper" id="newestReleasesWrapper">
                 <div class="newestReleasesGrid" id="newestReleasesGrid"></div>
             </div>
         </div>
@@ -92,6 +98,13 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
 
 <div class="footer">
     <h2>Contact and authors</h2>
+    <p>
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+            <img style="border:0;width:88px;height:31px"
+                 src="http://jigsaw.w3.org/css-validator/images/vcss"
+                 alt="Valid CSS!" />
+        </a>
+    </p>
 </div>
 
 </body>

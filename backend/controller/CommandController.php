@@ -20,14 +20,14 @@ class CommandController
             echo "Parsing failed";
         } else
         {
-            oci_bind_by_name($stmt,':email',$userEmail);
-            oci_bind_by_name($stmt,':message',$result, 400, SQLT_CHR);
+            oci_bind_by_name($stmt, ':email', $userEmail);
+            oci_bind_by_name($stmt, ':message', $result, 400, SQLT_CHR);
 
             oci_execute($stmt);
             oci_commit($this->conn);
         }
 
-        if($result != 'Succes!')
+        if ($result != 'Succes!')
         {
             return false;
         }
@@ -72,18 +72,12 @@ class CommandController
 
     public function getShoppingCart($userEmail)
     {
-        if ($userEmail === null)
-        {
-            echo "<h2>You should login first!</h2>";
-            return false;
-        }
         $sqlQuery = 'begin :cartCursor := AFISARE_CART(:email); end;';
         $shoppingCart = oci_new_cursor($this->conn);
-        if(!($stmt = oci_parse($this->conn, $sqlQuery)))
+        if (!($stmt = oci_parse($this->conn, $sqlQuery)))
         {
             return false;
-        }
-        else
+        } else
         {
             oci_bind_by_name($stmt, ':cartCursor', $shoppingCart, -1, OCI_B_CURSOR);
             oci_bind_by_name($stmt, ':email', $userEmail);
@@ -178,7 +172,7 @@ class CommandController
             oci_bind_by_name($stmt, ':cost', $costInt);
             oci_execute($stmt, OCI_NO_AUTO_COMMIT);
             DbConnection::commitChanges();
-            
+
             return true;
         }
 
