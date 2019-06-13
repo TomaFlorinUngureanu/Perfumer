@@ -41,6 +41,12 @@
     height: 30px;
 }
 
+.inputRowLimit {
+    width: 400px;
+    font-size: 14px;
+    height: 30px;
+}
+
 .fragranceNotes {
     width: 200px;
     overflow-y: scroll;

@@ -20,7 +20,7 @@ if (isset($_POST['note']) &&
     $userEmail = json_decode($_POST['userEmail'])[0];
     $date1 = json_decode($_POST['date1'])[0];
     $date2 = json_decode($_POST['date2'])[0];
-    $limit = 100;
+    $limit = json_decode($_POST['rowLimit'])[0];
 
     if ($note === null)
     {

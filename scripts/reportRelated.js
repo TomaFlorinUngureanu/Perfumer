@@ -19,7 +19,6 @@ function createReport(typeOfReport) {
             return false;
         }
     }
-    //limitReports();
 
     let notes = selectedElements('notes');
     let seasons = selectedElements('seasons');
@@ -28,7 +27,19 @@ function createReport(typeOfReport) {
     let emailAddressElement = document.getElementById('emailAddress');
     let fromDateElement = document.getElementById('fromDate');
     let toDateElement = document.getElementById('toDate');
+    let rowLimitElement = document.getElementById('inputRowLimit');
 
+    let rowLimit = rowLimitElement.value;
+    let rowLimitInt;
+
+    if (parseInt(rowLimit)) {
+        rowLimitInt = parseInt(rowLimit);
+    } else {
+        alert("Invalid row number. Try again!");
+        return false;
+    }
+
+    let rowLimitJson = JSON.stringify([rowLimitInt]);
     let notesJson = JSON.stringify(notes);
     let seasonsJson = JSON.stringify(seasons);
     let occasionsJson = JSON.stringify(occasions);
@@ -42,17 +53,19 @@ function createReport(typeOfReport) {
 
     const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
     let date = new Date(fromDateElement.value);
-    let fromDate = date.getDay() + '-' + months[date.getMonth()] + '-' + date.getFullYear().toString().replace("20", "");
+    //console.log(date);
+    //console.log(date.getDate());
+    let fromDate = date.getDate() + '-' + months[date.getMonth()] + '-' + date.getFullYear().toString().replace("20", "");
 
     date = new Date(toDateElement.value);
-    let toDate = date.getDay() + '-' + months[date.getMonth()] + '-' + date.getFullYear().toString().replace("20", "");
-
+    //console.log(date);
+    let toDate = date.getDate() + '-' + months[date.getMonth()] + '-' + date.getFullYear().toString().replace("20", "");
 
     let fromDateJson = JSON.stringify([fromDate]);
     let toDateJson = JSON.stringify([toDate]);
 
-    console.log(fromDateJson);
-    console.log(toDateJson);
+    //console.log(fromDateJson);
+    // console.log(toDateJson);
 
     let xmlhttp;
     if (window.XMLHttpRequest) {
@@ -73,6 +86,7 @@ function createReport(typeOfReport) {
     };
 
     xmlhttp.send("&note=" + notesJson + "&season=" + seasonsJson + "&occasion=" + occasionsJson +
-        "&byStock=" + byStockJson + "&userEmail=" + emailJson + "&date1=" + fromDateJson + "&date2=" + toDateJson);
+        "&byStock=" + byStockJson + "&userEmail=" + emailJson + "&date1=" + fromDateJson + "&date2=" + toDateJson +
+        "&rowLimit=" + rowLimitJson);
 
 }

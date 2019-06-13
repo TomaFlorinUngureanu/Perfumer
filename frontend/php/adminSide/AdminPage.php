@@ -84,6 +84,12 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
                            placeholder="Enter the email address..">
                 </label>
                 <p id="emailAddress" class="emailAddress"></p>
+                <label for="rowLimitLabel">Row limit
+                    <br>
+                    <input type="text" name="subject" id="inputRowLimit" class="inputRowLimit"
+                           placeholder="Enter the row limit..(0 for all)">
+                </label>
+                <p id="rowLimit" class="rowLimit"></p>
                 <br>
                 <div class="updateEmailAddress">
                     <button class="setEmail" onclick="setUserAddress('inputEmailAddress','emailAddress')">Set email
