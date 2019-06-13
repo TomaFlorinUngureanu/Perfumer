@@ -25,6 +25,7 @@
     margin-left: auto;
     margin-right: auto;
     width: 50%;
+    height: auto;
 }
 
  .fragranceGrid p
@@ -40,7 +41,8 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 100%;
+    width: 75%;
+    height: auto;
 }
 
 .leftcolumn .fragranceGrid p
@@ -49,12 +51,6 @@
     font-size: 12px;
     color:red;
     vertical-align: middle;
-}
-
-.fragranceGrid img
-{
-    width: 100%;
-    height: auto;
 }
 
 .recommendRow:after {
@@ -180,7 +176,19 @@ body {
     font-size: 15px;
 }
 
+
 @media screen and (max-width: 800px) {
+
+    .leftcolumn .fragranceGrid .centerFragrancePicture
+    {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 25%;
+        height: auto;
+    }
+
+
     .leftcolumn, .rightcolumn {
         width: 100%;
         padding: 0;
@@ -208,6 +216,16 @@ body {
 }
 
 @media screen and (max-width: 600px) {
+
+    .leftcolumn .fragranceGrid .centerFragrancePicture
+    {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 20%;
+        height: auto;
+    }
+
     .leftcolumn, .rightcolumn {
         width: 100%;
         padding: 0;
@@ -235,6 +253,16 @@ body {
 }
 
 @media screen and (max-width: 400px) {
+
+    .leftcolumn .fragranceGrid .centerFragrancePicture
+    {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 15%;
+        height: auto;
+    }
+
     .header {
         float: none;
         display: block;

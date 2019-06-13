@@ -1,7 +1,8 @@
 <?php
+error_reporting(0);
 ob_start();
 require_once('../../config/Settings.php');
-require_once('../../backend/utils/GoogleLoginApi.php');
+require_once('../../backend/utils/userRelated/GoogleLoginApi.php');
 require_once('../../backend/controller/PerfumeController.php');
 require_once('../../backend/database/DbConnection.php');
 require_once('../../backend/model/PerfumeModel.php');
@@ -34,7 +35,7 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
     </style>
 </head>
 
-<body onload="getNewestReleases()">
+<body onload="getSpecificPerfumeFunctions()">
 
 <div class="header">
     <div style="display: flex; justify-content: center;">
@@ -49,14 +50,19 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
     <a href="PerfumerShoppingCart.php" style="float:right">Shopping Cart</a>
 
     <?php if (!isset($_SESSION["userName"])) : ?>
-        <a id="LoginStatus" href="https://accounts.google.com/o/oauth2/auth?scope=
+        <a href="https://accounts.google.com/o/oauth2/auth?scope=
     <?= $redirect ?>" style="float:right">Login</a>
     <?php else : ?>
-        <a href="PerfumerMyProfile.php">My Profile</a>
-        <a id="LoginStatus" style="float:right" href="../../backend/utils/Logout.php">Logout</a>
+        <a style="float:right" href="../../backend/utils/userRelated/Logout.php">Logout</a>
+        <?php if ($_SESSION["userName"] == 'Admin') : ?>
+            <a href="adminSide/AdminPage.php">Admin Page</a>
+        <?php else : ?>
+            <a href="PerfumerMyProfile.php">My Profile</a>
+        <?php endif; ?>
     <?php endif; ?>
-
-    <a href="PerfumerContact.php" style="float:right">Contact</a>
+    <?php if (!($_SESSION["userName"] == 'Admin')) : ?>
+        <a href="PerfumerContact.php" style="float:right">Contact</a>
+    <?php endif; ?>
 </div>
 
 <div class="row">
@@ -101,26 +107,28 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
                     <button type="button" class="toCartButton" onclick="addToCart()">Add to cart</button>
                 </div>
             </div>
-            <script src="../scripts/fragranceQuantity.js?v=2"></script>
-            <script src="../scripts/ajaxRelated.js?v=2">checkStock()</script>
+            <script src="../../scripts/fragranceQuantity.js?v=2"></script>
+            <script src="../../scripts/ajaxRelated.js?v=2">checkStock()</script>
             <div class="resemblingFragrancesWrapper">
             </div>
         </div>
         <div class="card">
+            <h2>Fragrances Alike</h2>
             <div class="resemblingFragranceWrapper" id="resemblingFragranceWrapper">
-
+                <div class="resemblingFragranceGrid" id="resemblingFragranceGrid">
             </div>
         </div>
     </div>
-    <div class="leftcolumn">
-        <div class="card">
-            <h2>Newest releases</h2>
-            <div class="newestReleasesWrapper" id="newestReleasesGrid">
-                <div class="newestReleasesGrid" id="newestReleasesGrid"></div>
-            </div>
+</div>
+<div class="leftcolumn">
+    <div class="card">
+        <h2>Newest releases</h2>
+        <div class="newestReleasesWrapper" id="newestReleasesGrid">
+            <div class="newestReleasesGrid" id="newestReleasesGrid"></div>
         </div>
-        <script src="../scripts/ajaxRelated.js"></script>
     </div>
+    <script src="../../scripts/ajaxRelated.js"></script>
+</div>
 </div>
 
 <div class="footer">

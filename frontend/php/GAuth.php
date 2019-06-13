@@ -1,11 +1,21 @@
 <?php
+error_reporting(0);
 require_once('../../config/Settings.php');
-require_once('../../backend/utils/GoogleLoginApi.php');
+require_once('../../backend/utils/userRelated/GoogleLoginApi.php');
 
 GoogleLoginApi::startSession();
 $userInfo = GoogleLoginApi::greeting();
-$_SESSION["userName"] = $userInfo['name'];
+
+if($userInfo['email'] == 'perfumer0noreply@gmail.com')
+{
+    $_SESSION["userName"] = 'Admin';
+}
+else
+{
+    $_SESSION["userName"] = $userInfo['name'];
+}
 $_SESSION["userEmail"] = $userInfo['email'];
+
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +25,7 @@ $_SESSION["userEmail"] = $userInfo['email'];
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine">
     <title>Perfumer Auth</title>
     <style>
-        <?php include '../styles/GAuthStyles.css'; ?>
+        <?php include '../styles/GAuthStyleSheet.css'; ?>
     </style>
 </head>
 <body onload="loadMultiple()">
@@ -24,7 +34,7 @@ $_SESSION["userEmail"] = $userInfo['email'];
     <div style="display: flex; justify-content: center;">
         <img src="../images/logo.png" alt="Le petit parfum" style="width:180px;height:180px">
     </div>
-    <h1>Welcome, <?= $userInfo['name']?> </h1>
+    <h1>Welcome, <?=$_SESSION["userName"]?></h1>
 </div>
 <div class="topnav">
     <a href="PerfumerIndex.php">Home</a>
@@ -36,49 +46,24 @@ $_SESSION["userEmail"] = $userInfo['email'];
         <a href="https://accounts.google.com/o/oauth2/auth?scope=
     <?= $redirect ?>" style="float:right">Login</a>
     <?php else : ?>
-        <a style="float:right" href="../../backend/utils/Logout.php">Logout</a>
-        <a href="PerfumerMyProfile.php">My Profile</a>
+        <a style="float:right" href="../../backend/utils/userRelated/Logout.php">Logout</a>
+        <?php if ($_SESSION["userName"] == 'Admin') : ?>
+            <a href="adminSide/AdminPage.php">Admin Page</a>
+        <?php else : ?>
+            <a href="PerfumerMyProfile.php">My Profile</a>
+        <?php endif; ?>
     <?php endif; ?>
-
-    <a href="PerfumerContact.php" style="float:right">Contact</a>
+    <?php if (!($_SESSION["userName"] == 'Admin')) : ?>
+        <a href="PerfumerContact.php" style="float:right">Contact</a>
+    <?php endif; ?>
 </div>
-
 <div class="row">
     <div class="rightcolumn">
         <div class="card">
-            <h2>Best sellers</h2>
-            <div class="recommendRow">
-                <div class="recommendColumn" style="background-color:#aaa;">
-                    <h2>Column 1</h2>
-                    <p>Some text..</p>
-                </div>
-                <div class="recommendColumn" style="background-color:#bbb;">
-                    <h2>Column 2</h2>
-                    <p>Some text..</p>
-                </div>
-                <div class="recommendColumn" style="background-color:#ccc;">
-                    <h2>Column 3</h2>
-                    <p>Some text..</p>
-                </div>
-                <div class="recommendColumn" style="background-color:#ddd;">
-                    <h2>Column 4</h2>
-                    <p>Some text..</p>
-                </div>
-                <div class="recommendColumn" style="background-color:#eee;">
-                    <h2>Column 5</h2>
-                    <p>Some text..</p>
-                </div>
-                <div class="recommendColumn" style="background-color:#fff;">
-                    <h2>Column 6</h2>
-                    <p>Some text..</p>
-                </div>
-                <div class="recommendColumn" style="background-color:#eee;">
-                    <h2>Column 7</h2>
-                    <p>Some text..</p>
-                </div>
-                <div class="recommendColumn" style="background-color:#ccc;">
-                    <h2>Column 8</h2>
-                    <p>Some text..</p>
+            <h3>You might like</h3>
+            <div class="youMightLikeWrapper" id="youMightLikeWrapper">
+                <div class="youMighLikeGrid" id="youMighLikeGrid">
+
                 </div>
             </div>
         </div>
@@ -95,7 +80,7 @@ $_SESSION["userEmail"] = $userInfo['email'];
                 <div class="newestReleasesGrid" id="newestReleasesGrid"></div>
             </div>
         </div>
-        <script src="../scripts/ajaxRelated.js"></script>
+        <script src="../../scripts/ajaxRelated.js"></script>
     </div>
 </div>
 

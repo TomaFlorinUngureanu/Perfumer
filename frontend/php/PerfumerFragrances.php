@@ -1,6 +1,7 @@
 <?php
+error_reporting(0);
 require_once('../../config/Settings.php');
-require_once('../../backend/utils/GoogleLoginApi.php');
+require_once('../../backend/utils/userRelated/GoogleLoginApi.php');
 require_once('../../backend/database/DbConnection.php');
 require_once('../../backend/model/PerfumeModel.php');
 require_once('../../backend/controller/PerfumeController.php');
@@ -45,11 +46,16 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
         <a href="https://accounts.google.com/o/oauth2/auth?scope=
     <?= $redirect ?>" style="float:right">Login</a>
     <?php else : ?>
-        <a style="float:right" href="../../backend/utils/Logout.php">Logout</a>
-        <a href="PerfumerMyProfile.php">My Profile</a>
+        <a style="float:right" href="../../backend/utils/userRelated/Logout.php">Logout</a>
+        <?php if ($_SESSION["userName"] == 'Admin') : ?>
+            <a href="adminSide/AdminPage.php">Admin Page</a>
+        <?php else : ?>
+            <a href="PerfumerMyProfile.php">My Profile</a>
+        <?php endif; ?>
     <?php endif; ?>
-
-    <a href="PerfumerContact.php" style="float:right">Contact</a>
+    <?php if (!($_SESSION["userName"] == 'Admin')) : ?>
+        <a href="PerfumerContact.php" style="float:right">Contact</a>
+    <?php endif; ?>
 </div>
 
 <div class="row">
@@ -58,14 +64,14 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
             <p id="demo123" style="font-size: x-small"></p>
             <div class="filterH2">
                 <input type="submit" onclick="loadXMLDoc()" value="Filter!">
-                <script src="../scripts/ajaxRelated.js?v=2"></script>
+                <script src="../../scripts/ajaxRelated.js?v=2"></script>
             </div>
             <h3>Price range:</h3>
             <div class="slidecontainer">
                 <input type="range" min="<?= $minVal ?>" max="<?= $maxVal ?>"
                        value="<?= $minVal ?>" class="slider" id="myRange" name="price[]">
                 <p>Max price: <span id="demo"></span> RON</p>
-                <script src="../scripts/fragranceSliders.js">
+                <script src="../../scripts/fragranceSliders.js">
                 </script>
             </div>
             <h3>For who?</h3>
@@ -112,7 +118,7 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
                     </label>
                 <?php endforeach; ?>
             </div>
-            <script src="../scripts/limitCheckBoxSelection.js"></script>
+            <script src="../../scripts/limitCheckBoxSelection.js"></script>
         </div>
     </div>
     <div class="rightcolumn">

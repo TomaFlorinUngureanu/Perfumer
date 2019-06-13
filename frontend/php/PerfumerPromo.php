@@ -1,7 +1,8 @@
 <?php
+error_reporting(0);
 ob_start();
 require_once('../../config/Settings.php');
-require_once('../../backend/utils/GoogleLoginApi.php');
+require_once('../../backend/utils/userRelated/GoogleLoginApi.php');
 require_once('../../backend/database/DbConnection.php');
 require_once('../../backend/model/PerfumeModel.php');
 require_once('../../backend/controller/PerfumeController.php');
@@ -42,11 +43,16 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
         <a href="https://accounts.google.com/o/oauth2/auth?scope=
     <?= $redirect ?>" style="float:right">Login</a>
     <?php else : ?>
-        <a style="float:right" href="../../backend/utils/Logout.php">Logout</a>
-        <a href="PerfumerMyProfile.php">My Profile</a>
+        <a style="float:right" href="../../backend/utils/userRelated/Logout.php">Logout</a>
+        <?php if ($_SESSION["userName"] == 'Admin') : ?>
+            <a href="adminSide/AdminPage.php">Admin Page</a>
+        <?php else : ?>
+            <a href="PerfumerMyProfile.php">My Profile</a>
+        <?php endif; ?>
     <?php endif; ?>
-
-    <a href="PerfumerContact.php" style="float:right">Contact</a>
+    <?php if (!($_SESSION["userName"] == 'Admin')) : ?>
+        <a href="PerfumerContact.php" style="float:right">Contact</a>
+    <?php endif; ?>
 </div>
 
 <div class="row">
@@ -56,40 +62,7 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
             <div class="clearanceSalesGrid" id="clearanceSalesGrid">
 
             </div>
-            <script src="../scripts/ajaxRelated.js"></script>
-        </div>
-        <div class="card">
-            <h3>Special discounts</h3>
-            <div class="fakeimg">
-                <p>Image with perfume #1 + price, size in ml</p>
-            </div>
-            <div class="fakeimg">
-                <p>Image with perfume #2 + price, size in ml</p>
-            </div>
-            <div class="fakeimg">
-                <p>Image with perfume #3 + price, size in ml</p>
-            </div>
-            <div class="fakeimg">
-                <p>Image with perfume #4 + price, size in ml</p>
-            </div>
-            <div class="fakeimg">
-                <p>Image with perfume #5 + price, size in ml</p>
-            </div>
-            <div class="fakeimg">
-                <p>Image with perfume #6 + price, size in ml</p>
-            </div>
-            <div class="fakeimg">
-                <p>Image with perfume #7 + price, size in ml</p>
-            </div>
-            <div class="fakeimg">
-                <p>Image with perfume #8 + price, size in ml</p>
-            </div>
-            <div class="fakeimg">
-                <p>Image with perfume #9 + price, size in ml</p>
-            </div>
-            <div class="fakeimg">
-                <p>Image with perfume #10 + price, size in ml</p>
-            </div>
+            <script src="../../scripts/ajaxRelated.js"></script>
         </div>
     </div>
 

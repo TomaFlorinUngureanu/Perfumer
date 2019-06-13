@@ -1,7 +1,7 @@
 <?php
 ob_start();
 require_once('../../config/Settings.php');
-require_once('../../backend/utils/GoogleLoginApi.php');
+require_once('../../backend/utils/userRelated/GoogleLoginApi.php');
 GoogleLoginApi::startSession();
 
 $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email') .
@@ -37,23 +37,30 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
         <a href="https://accounts.google.com/o/oauth2/auth?scope=
     <?= $redirect ?>" style="float:right">Login</a>
     <?php else : ?>
-        <a style="float:right" href="../../backend/utils/Logout.php">Logout</a>
-        <a href="PerfumerMyProfile.php">My Profile</a>
+        <a style="float:right" href="../../backend/utils/userRelated/Logout.php">Logout</a>
+        <?php if ($_SESSION["userName"] == 'Admin') : ?>
+            <a href="adminSide/AdminPage.php">Admin Page</a>
+        <?php else : ?>
+            <a href="PerfumerMyProfile.php">My Profile</a>
+        <?php endif; ?>
     <?php endif; ?>
-
-    <a href="PerfumerContact.php" style="float:right">Contact</a>
+    <?php if (!($_SESSION["userName"] == 'Admin')) : ?>
+        <a href="PerfumerContact.php" style="float:right">Contact</a>
+    <?php endif; ?>
 </div>
 
 <div class="row">
     <div class="rightcolumn">
-        <div class="card">
-            <h3>You might like</h3>
-            <div class="youMightLikeWrapper" id="youMightLikeWrapper">
-                <div class="youMighLikeGrid" id="youMighLikeGrid">
+        <?php if (isset($_SESSION["userName"])) : ?>
+            <div class="card">
+                <h3>You might like</h3>
+                <div class="youMightLikeWrapper" id="youMightLikeWrapper">
+                    <div class="youMighLikeGrid" id="youMighLikeGrid">
 
+                    </div>
                 </div>
             </div>
-        </div>
+        <?php endif; ?>
         <div class="card">
             <h3>Our recommandation</h3>
             <div class="ourRecommendationWrapper" id="ourRecommendationWrapper">
@@ -68,7 +75,7 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
                 <div class="newestReleasesGrid" id="newestReleasesGrid"></div>
             </div>
         </div>
-        <script src="../scripts/ajaxRelated.js"></script>
+        <script src="../../scripts/ajaxRelated.js"></script>
     </div>
 </div>
 

@@ -10,50 +10,61 @@ class CommandController
         $this->conn = DbConnection::getDbConnection();
     }
 
-    public function getAllCommands()
+    public function sendCommand($userEmail)
     {
-        if (func_num_args() == 0)
+        $sqlQuery = 'begin :message := CART_TO_COMANDA(:email); end;';
+        $result = '';
+        if (!($stmt = oci_parse($this->conn, $sqlQuery)))
         {
-            //get all the commands. ADMIN TO USE
-        } else if (func_num_args() == 1)
-        {
-            //check for userEmail correctness in the parameter
-            //get all the commands OF THE USER'S EMAIL IN THE PARAMETER
+            echo "Parsing failed";
         } else
         {
-            //error code, number of arguments to large
+            oci_bind_by_name($stmt,':email',$userEmail);
+            oci_bind_by_name($stmt,':message',$result, 400, SQLT_CHR);
+            oci_execute($stmt);
         }
+
+        if($result != 'Succes!')
+        {
+            return false;
+        }
+
+        return true;
     }
 
-    public function getDeliveredCommnds($userEmail)
+    public function printCommandsStatus($userEmail)
     {
-        if (func_num_args() == 0)
+
+        $sqlQuery = 'begin :commandsCursor := afisare_comenzi(:email); end;';
+        $commands = oci_new_cursor($this->conn);
+        if (!($stmt = oci_parse($this->conn, $sqlQuery)))
         {
-            //get all the delivered commands. ADMIN TO USE
-        } else if (func_num_args() == 1)
-        {
-            //check for userEmail correctness in the parameter
-            //prepared statement FOR USER to get all the commands that have been delivered
+            echo "Parsing failed";
         } else
         {
-            //error code, number of arguments to large
+            oci_bind_by_name($stmt, ':commandsCursor', $commands, -1, OCI_B_CURSOR);
+            oci_bind_by_name($stmt, ':email', $userEmail);
+            oci_execute($stmt);
+            oci_execute($commands);
         }
 
-    }
-
-    public function getOngoingCommands($userEmail)
-    {
-        if (func_num_args() == 0)
+        $commandsArray = array();
+        while (($row = oci_fetch_array($commands, OCI_ASSOC + OCI_RETURN_NULLS)) != false)
         {
-            //get all the ongoing commands. ADMIN TO USE
-        } else if (func_num_args() == 1)
-        {
-            //check for userEmail correctness in the parameter
-            //prepared statement for USER to get all the commands that are ongoing
-        } else
-        {
-            //error code, number of arguments to large
+            array_push($fragranceArray, $row);
         }
+
+        for ($i = 0; $i < sizeof($commandsArray); $i++)
+        {
+            foreach ($commandsArray[$i] as $key => $value)
+            {
+                $text = str_replace("\u0026amp;", "&", $value);
+                $text = str_replace("\u0027", "'", $value);
+                $commandsArray[$i][$key] = $text;
+            }
+        }
+
+        return true;
     }
 
     public function getShoppingCart($userEmail)
@@ -65,11 +76,17 @@ class CommandController
         }
         $sqlQuery = 'begin :cartCursor := AFISARE_CART(:email); end;';
         $shoppingCart = oci_new_cursor($this->conn);
-        $stmt = oci_parse($this->conn, $sqlQuery);
-        oci_bind_by_name($stmt, ':cartCursor', $shoppingCart, -1, OCI_B_CURSOR);
-        oci_bind_by_name($stmt, ':email', $userEmail);
-        oci_execute($stmt);
-        oci_execute($shoppingCart);
+        if(!($stmt = oci_parse($this->conn, $sqlQuery)))
+        {
+            return false;
+        }
+        else
+        {
+            oci_bind_by_name($stmt, ':cartCursor', $shoppingCart, -1, OCI_B_CURSOR);
+            oci_bind_by_name($stmt, ':email', $userEmail);
+            oci_execute($stmt);
+            oci_execute($shoppingCart);
+        }
         $fragranceArray = array();
         while (($row = oci_fetch_array($shoppingCart, OCI_ASSOC + OCI_RETURN_NULLS)) != false)
         {
@@ -157,8 +174,8 @@ class CommandController
             oci_bind_by_name($stmt, ':bucati', $amountInt);
             oci_bind_by_name($stmt, ':cost', $costInt);
             oci_execute($stmt, OCI_NO_AUTO_COMMIT);
-
-            oci_commit($this->conn);
+            DbConnection::commitChanges();
+            
             return true;
         }
 

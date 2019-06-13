@@ -1,9 +1,10 @@
 <?php
+error_reporting(0);
 ob_start();
 require_once('../../config/Settings.php');
-require_once('../../backend/utils/GoogleLoginApi.php');
+require_once('../../backend/utils/userRelated/GoogleLoginApi.php');
 require_once('../../libs/PHPMailer_5.2.4/class.phpmailer.php');
-require_once('../../backend/utils/MailFunctionality.php');
+require_once('../../backend/utils/userRelated/MailFunctionality.php');
 
 GoogleLoginApi::startSession();
 $mailFunctionality = new MailFunctionality();
@@ -41,7 +42,7 @@ $redirect = urlencode('https://www.googleapis.com/auth/userinfo.profile https://
         <a href="https://accounts.google.com/o/oauth2/auth?scope=
     <?= $redirect ?>" style="float:right">Login</a>
     <?php else : ?>
-        <a style="float:right" href="../../backend/utils/Logout.php">Logout</a>
+        <a style="float:right" href="../../backend/utils/userRelated/Logout.php">Logout</a>
         <a href="PerfumerMyProfile.php">My Profile</a>
     <?php endif; ?>
 
