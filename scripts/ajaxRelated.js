@@ -893,6 +893,7 @@ function generateCommandHTML(response, command, theParent) {
     let oCost;
     let oCommandDate;
     let oCommandId;
+    let oCommandStatus;
 
     //create the div class
     oDiv = document.createElement("div");
@@ -952,6 +953,13 @@ function generateCommandHTML(response, command, theParent) {
     oCommandDate.setAttribute('id', 'commandDate');
     oCommandDate.setAttribute('name', 'commandDate');
     oDiv.appendChild(oCommandDate);
+
+    //create the price element and append it to the div class
+    oCommandStatus = document.createElement("p");
+    oCommandStatus.innerHTML = "DATE: " + response[command]['STARE'];
+    oCommandStatus.setAttribute('id', 'commandDate');
+    oCommandStatus.setAttribute('name', 'commandDate');
+    oDiv.appendChild(oCommandStatus);
 
     let dellimiter = document.createElement("br");
     let delimiter1 = document.createElement("p");
